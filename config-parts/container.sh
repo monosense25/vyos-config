@@ -4,21 +4,6 @@
 set container network CONTAINERS description 'Network for containers'
 set container network CONTAINERS prefix '10.11.11.0/24'
 
-# cloudflare-ddns
-set container name cloudflare-ddns allow-host-networks
-set container name cloudflare-ddns environment CF_API_TOKEN value "${SECRET_CLOUDFLARE_DDNS_TOKEN}"
-set container name cloudflare-ddns environment DOMAINS value "${SECRET_CLOUDFLARE_DDNS_DOMAINS}"
-set container name cloudflare-ddns environment IP4_PROVIDER value 'local'
-set container name cloudflare-ddns environment IP6_PROVIDER value 'none'
-set container name cloudflare-ddns environment PGID value '1000'
-set container name cloudflare-ddns environment PUID value '1000'
-set container name cloudflare-ddns environment TZ value 'Asia/Jakarta'
-set container name cloudflare-ddns environment UPDATE_CRON value '@every 2m'
-set container name cloudflare-ddns image 'docker.io/favonia/cloudflare-ddns:1.10.1'
-set container name cloudflare-ddns memory '0'
-set container name cloudflare-ddns restart 'on-failure'
-set container name cloudflare-ddns shared-memory '0'
-
 # adguardhome
 set container name adguardhome cap-add 'net-bind-service'
 set container name adguardhome image 'docker.io/adguard/adguardhome:v0.107.39'
@@ -113,6 +98,21 @@ set container name onepassword-sync volume data source '/tmp/onepassword/data'
 set container name onepassword-sync volume data destination '/home/opuser/.op/data'
 set container name onepassword-sync volume data mode 'rw'
 
+# cloudflare-ddns
+set container name cloudflare-ddns allow-host-networks
+set container name cloudflare-ddns environment CF_API_TOKEN value "${SECRET_CLOUDFLARE_DDNS_TOKEN}"
+set container name cloudflare-ddns environment DOMAINS value "${SECRET_CLOUDFLARE_DDNS_DOMAINS}"
+set container name cloudflare-ddns environment IP4_PROVIDER value 'local'
+set container name cloudflare-ddns environment IP6_PROVIDER value 'none'
+set container name cloudflare-ddns environment PGID value '1000'
+set container name cloudflare-ddns environment PUID value '1000'
+set container name cloudflare-ddns environment TZ value 'Asia/Jakarta'
+set container name cloudflare-ddns environment UPDATE_CRON value '@every 2m'
+set container name cloudflare-ddns image 'docker.io/favonia/cloudflare-ddns:1.10.1'
+set container name cloudflare-ddns memory '0'
+set container name cloudflare-ddns restart 'on-failure'
+set container name cloudflare-ddns shared-memory '0'
+
 # node-exporter
 set container name node-exporter environment procfs value '/host/proc'
 set container name node-exporter environment rootfs value '/host/rootfs'
@@ -142,7 +142,7 @@ set container name speedtest-exporter shared-memory '0'
 # udp-broadcast-relay-mdns
 set container name udp-broadcast-relay-mdns allow-host-networks
 set container name udp-broadcast-relay-mdns cap-add 'net-raw'
-set container name udp-broadcast-relay-mdns environment CFG_DEV value 'bond0.1612;bond0.1613'
+set container name udp-broadcast-relay-mdns environment CFG_DEV value 'bond0.1611;bond0.1613'
 set container name udp-broadcast-relay-mdns environment CFG_ID value '2'
 set container name udp-broadcast-relay-mdns environment CFG_MULTICAST value '224.0.0.251'
 set container name udp-broadcast-relay-mdns environment CFG_PORT value '5353'

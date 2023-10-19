@@ -1,17 +1,17 @@
 # Only define the known VLAN subnets as trusted
 acl "trusted" {
-  192.168.10.0/24;   # LAN1
-  192.168.50.0/24;   # HOME
-  192.168.69.0/24;   # IOT
-  192.168.200.0/24;  # SERVER
-  192.168.250.0/24;  # GUEST
-  10.10.0.0/24;      # WIREGUARD
-  10.5.0.0/24;       # CONTAINERS
+  172.16.10.0/24;   # MANAGEMENT
+  172.16.11.0/24;   # INFRA
+  172.16.12.0/24;   # HOME
+  172.16.13.0/24;   # IoT
+  172.16.14.0/24;   # CCTV
+  172.16.15.0/24;   # PROD
+  10.11.11.0/24;    # CONTAINERS
 };
 
 options {
   directory "/var/cache/bind";
-  listen-on { 127.0.0.1; 10.5.0.3; };
+  listen-on { 127.0.0.1; 10.11.11.3; };
 
   allow-recursion {
     trusted;
@@ -33,64 +33,38 @@ logging {
     print-time yes;
   };
   category security { stdout; };
-  category dnssec { stdout; };
-  category default { stdout; };
+  category dnssec   { stdout; };
+  category default  { stdout; };
 };
 
 include "/etc/bind/rndc.key";
 include "/etc/bind/externaldns.key";
+include "/etc/bind/ddnsupdate.key";
 
 controls {
   inet 127.0.0.1 allow { localhost; } keys { "rndc-key"; };
 };
 
-zone "${SECRET_DOMAIN_0}." {
+zone "monosense.io." {
   type master;
-  file "/etc/bind/zones/db.${SECRET_DOMAIN_0}";
-  journal "/var/cache/bind/db.${SECRET_DOMAIN_0}.jnl";
+  file "/etc/bind/zones/db.monosense.io";
+  journal "/var/cache/bind/db.monosense.io.jnl";
   allow-transfer {
     key "externaldns";
   };
   update-policy {
     grant externaldns zonesub ANY;
+    grant ddnsupdate zonesub ANY;
+    grant * self * A;
   };
 };
 
-zone "${SECRET_DOMAIN_1}." {
+zone "16.172.in-addr.arpa." {
   type master;
-  file "/etc/bind/zones/db.${SECRET_DOMAIN_1}";
-  journal "/var/cache/bind/db.${SECRET_DOMAIN_1}.jnl";
-  allow-transfer {
-    key "externaldns";
-  };
+  file "/etc/bind/zones/db.16.172.in-addr.arpa";
+  journal "/var/cache/bind/db.16.172.in-addr.arpa.jnl";
   update-policy {
-    grant externaldns zonesub ANY;
+    grant ddnsupdate zonesub ANY;
+    grant * self * A;
   };
-};
-
-zone "${SECRET_DOMAIN_2}." {
-  type master;
-  file "/etc/bind/zones/db.${SECRET_DOMAIN_2}";
-  journal "/var/cache/bind/db.${SECRET_DOMAIN_2}.jnl";
-  allow-transfer {
-    key "externaldns";
-  };
-  update-policy {
-    grant externaldns zonesub ANY;
-  };
-};
-
-zone "home.arpa." {
-  type master;
-  file "/etc/bind/zones/db.home.arpa";
-};
-
-zone "168.192.in-addr.arpa." {
-  type master;
-  file "/etc/bind/zones/db.168.192.in-addr.arpa";
-};
-
-zone "10.in-addr.arpa." {
-  type master;
-  file "/etc/bind/zones/db.10.in-addr.arpa";
 };
