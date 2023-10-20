@@ -4,7 +4,7 @@
 ; SOA Records
 $TTL 3600
 $ORIGIN monosense.io
-@ 3600 IN SOA monosense.io. vg.monosense.io. (
+@ 3600 IN SOA vg.monosense.io. vg.monosense.io. (
   1697718828         ; serial number (epoch timestamp)
   7200               ; refresh period
   3600               ; retry period
@@ -27,7 +27,7 @@ iap01                       IN  A   172.16.10.8
 iap02                       IN  A   172.16.10.9
 vg-ipmi                     IN  A   172.16.10.10
 wlc                         IN  A   172.16.10.11
-san-ip                      IN  A   172.16.10.12
+san-ipmi                    IN  A   172.16.10.12
 vg                          IN  A   172.16.10.254
 
 ; INFRA bond0.1611
@@ -47,22 +47,35 @@ k8s-w2                      IN  A   172.16.11.15
 k8s-w3                      IN  A   172.16.11.16
 
 ; HOME bond0.1612
+; start from .100-199
 
 ; IOT bond0.1613
-em00                        IN  A   172.16.13.1
-em01                        IN  A   172.16.13.2
-em02                        IN  A   172.16.13.3
-em03                        IN  A   172.16.13.4
-em04                        IN  A   172.16.13.5
-em05                        IN  A   172.16.13.6
-ups1-plug                   IN  A   172.16.13.7
+; start from .100-199
+em00                        IN  A   172.16.13.100
+em01                        IN  A   172.16.13.101
+em02                        IN  A   172.16.13.102
+em03                        IN  A   172.16.13.103
+em04                        IN  A   172.16.13.104
+em05                        IN  A   172.16.13.105
+office-ups1-plug            IN  A   172.16.13.106
+office-ups2-plug            IN  A   172.16.13.107
+office-ups3-plug            IN  A   172.16.13.108
+backyard-water-pump-plug    IN  A   172.16.13.109
+backyard-booster-pump-plug  IN  A   172.16.13.110
+masterbedroom-plug          IN  A   172.16.13.111
+farezzbedroom-plug          IN  A   172.16.13.112
+office-rack-fans-plug       IN  A   172.16.13.113
+guestroom-led-strip         IN  A   172.16.13.114
+
 
 ; CCTV bond0.1614
-ipc01                       IN  A   172.16.14.1   
-ipc02                       IN  A   172.16.14.2
-ipc03                       IN  A   172.16.14.3
-icp04                       IN  A   172.16.14.4
-ipc05                       IN  A   172.16.14.5
+; start from .100-199
+nvr                         IN  A   172.16.14.100
+ipc01                       IN  A   172.16.14.101 
+ipc02                       IN  A   172.16.14.102
+ipc03                       IN  A   172.16.14.103
+icp04                       IN  A   172.16.14.104
+ipc05                       IN  A   172.16.14.105
 
 ; CONTAINERS
 adguard                     IN  A   10.11.11.2
