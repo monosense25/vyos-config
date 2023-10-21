@@ -1,10 +1,16 @@
 <div align="center">
 
 <img src="https://vyos.io/wp-content/themes/vyos_theme/images/main/vyos-logo.svg" align="center" width="144px" height="144px"/>
-
-### My VyOS IaC configuration
-
 </div>
+<br/>
+<p align="center">
+  <img src="https://img.shields.io/badge/VyOS_Version-1.4.rolling.202310130306-blue?style=for-the-badge">
+  <img src="https://img.shields.io/github/languages/code-size/monosense25/vyos-config?style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/monosense25/vyos-config/main?style=for-the-badge">
+</p>
+
+
+### VyOS IaC configuration
 
 ## :book:&nbsp; Overview
 
@@ -27,7 +33,7 @@ commit
 Once you're done, connect your workstation to the `eth1` and set a static IP in the `192.168.10.1/24` range.
 Then you can run [bootstrap.sh](./bootstrap.sh) and follow the instruction on your screen:
 ```
-bash <(curl -s https://raw.githubusercontent.com/budimanjojo/vyos-config/main/bootstrap.sh)
+bash <(curl -s https://raw.githubusercontent.com/monosense25/vyos-config/main/bootstrap.sh)
 ```
 
 The bootstrap script will:
@@ -51,6 +57,6 @@ This will ensure the state of this repository to be the same as the machine conf
 ## :handshake:&nbsp; Thanks
 
 A lot of inspiration in this repository came from:
-
+- [budimanjojo](https://github.com/budimanjojo/vyos-config)
 - [bjw-s](https://github.com/bjw-s/vyos-config)
 - [scotte](https://github.com/szinn/vyos-config)
