@@ -50,6 +50,7 @@ $ORIGIN in-addr.arpa.
 
 ; HOME
 ; start from .100-199
+100.12.16.172                IN  PTR printer.monosense.io.
 
 ; IoT
 ; start from .100-199

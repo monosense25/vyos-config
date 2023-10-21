@@ -70,17 +70,19 @@ set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 name-serv
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 range 0 start '172.16.12.200'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 range 0 stop '172.16.12.253'
 # Static Mapping HOME
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-p30-pro ip-address '172.16.12.100'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping printer763A3E1B ip-address '172.16.12.100'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping printer763A3E1B mac-address '3c:55:76:3a:3e:1b'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-p30-pro ip-address '172.16.12.101'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-p30-pro mac-address '72:93:59:73:71:e4'
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-wifi ip-address '172.16.12.101'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-wifi ip-address '172.16.12.102'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-wifi mac-address '9c:2f:9d:9c:e4:fb'
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-eth ip-address '172.16.12.102'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-eth ip-address '172.16.12.103'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezzel-laptop-eth mac-address ''
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-galaxy-s20 ip-address '172.16.12.103'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-galaxy-s20 ip-address '172.16.12.104'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-galaxy-s20 mac-address 'f2:42:70:72:49:93'
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-wifi ip-address '172.16.12.104'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-wifi ip-address '172.16.12.105'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-wifi mac-address '10:b1:df:d4:bb:d1'
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-eth ip-address '172.16.12.105'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-eth ip-address '172.16.12.106'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 static-mapping ezky-laptop-eth mac-address ''
 
 # IoT VLAN
@@ -123,6 +125,12 @@ set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-map
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping office-rack-fans-plug mac-address '10:d5:61:2f:5b:0d'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping guestroom-led-strip ip-address '172.16.13.114'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping guestroom-led-strip mac-address '40:f5:20:1f:5f:06'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping livingroom-smarttv-tcl ip-address '172.16.13.115'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping livingroom-smarttv-tcl mac-address 'c0:79:82:8e:a3:10'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping parents-smarttv-lg ip-address '172.16.13.116'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping parents-smarttv-lg mac-address 'a0:6f:aa:ba:04:60'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping parents-smarttv-cooca ip-address '172.16.13.117'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 static-mapping parents-smarttv-cooca mac-address ''
 
 # CCTV VLAN
 set service dhcp-server shared-network-name CCTV authoritative
@@ -137,7 +145,7 @@ set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 range 0 s
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping nvr ip-address '172.16.14.100'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping nvr mac-address ''
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc01 ip-address '172.16.14.101'
-set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc01 mac-address ''
+set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc01 mac-address 'fc:b6:9d:76:be:d2'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc02 ip-address '172.16.14.102'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc02 mac-address ''
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 static-mapping ipc03 ip-address '172.16.14.103'

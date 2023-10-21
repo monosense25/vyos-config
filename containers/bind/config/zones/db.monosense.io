@@ -48,6 +48,7 @@ k8s-w3                      IN  A   172.16.11.16
 
 ; HOME bond0.1612
 ; start from .100-199
+printer                     IN  A   172.16.12.100
 
 ; IOT bond0.1613
 ; start from .100-199
@@ -90,6 +91,7 @@ onepass                     IN  A   10.11.11.8
 nginx-ingress               IN  A   10.11.10.1
 vector                      IN  A   10.11.10.2
 plex                        IN  A   10.11.10.3
+mqtt                        IN  A   10.11.10.4
 
 ; CNAME
 
