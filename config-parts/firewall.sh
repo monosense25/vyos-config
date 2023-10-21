@@ -1,20 +1,29 @@
 #!/bin/vbash
 
 # Interface groups
-set firewall group interface-group FW_IG_MGMT interface 'bond0'
-set firewall group interface-group FW_IG_INFRA interface 'bond0.1611'
-set firewall group interface-group FW_IG_HOME interface 'bond0.1612'
-set firewall group interface-group FW_IG_IOT interface 'bond0.1613'
-set firewall group interface-group FW_IG_CCTV interface 'bond0.1614'
-set firewall group interface-group FW_IG_WAN interface 'pppoe0'
-set firewall group interface-group FW_IG_CONTAINERS interface 'pod-containers'
-# set firewall group interface-group FW_IG_WIREGUARD interface 'wg01'
+set firewall group interface-group IG_mgmt interface 'bond0'
+set firewall group interface-group IG_infra interface 'bond0.1611'
+set firewall group interface-group IG_home interface 'bond0.1612'
+set firewall group interface-group IG_iot interface 'bond0.1613'
+set firewall group interface-group IG_cctv interface 'bond0.1614'
+set firewall group interface-group IG_wan interface 'pppoe0'
+set firewall group interface-group IG_containers interface 'pod-containers'
+# set firewall group interface-group IG_wireguard interface 'wg01'
+
+# Network Group
+set firewall group network-group FW_NG_MGMT network '172.16.10.0/24'
+set firewall group network-group FW_NG_INFRA network '172.16.11.0/24'
+set firewall group network-group FW_NG_HOME network '172.16.12.0/24'
+set firewall group network-group FW_NG_IOT network '172.16.13.0/24'
+set firewall group network-group FW_NG_CCTV network '172.16.14.0/24'
+set firewall group network-group FW_NG_CONTAINERS network '10.11.11.0/24'
+set firewall group network-group FW_NG_SERVICES network '10.11.10.0/24'
 
 # Router (VyOS itself)
-set firewall group address-group FW_AG_ROUTER_ADDR_IPV4 address 10.0.0.1
-set firewall group address-group FW_AG_ROUTER_ADDR_IPV4 address 127.0.0.1
-set firewall group ipv6-address-group FW_AG_ROUTER_ADDR_IPV6 address fe80::e63a:6eff:fe5a:f805
-set firewall group ipv6-address-group FW_AG_ROUTER_ADDR_IPV6 address ::1
+set firewall group address-group FW_AG_ROUTER_ADDR_IPV4 address '10.0.0.1'
+set firewall group address-group FW_AG_ROUTER_ADDR_IPV4 address '127.0.0.1'
+set firewall group ipv6-address-group FW_AG_ROUTER_ADDR_IPV6 address 'fe80::e63a:6eff:fe5a:f805'
+set firewall group ipv6-address-group FW_AG_ROUTER_ADDR_IPV6 address '::1'
 
 # Printer Scanner
 set firewall group address-group FW_AG_PRINTER_ADDR address '172.16.12.100'
@@ -37,7 +46,14 @@ set firewall group address-group FW_AG_K8S_PLEX_SVC address '10.11.10.3'
 set firewall group address-group FW_AG_K8S_MQTT_SVC address '10.11.10.4'
 
 # MQTT client devices
-set firewall group address-group FW_AG_MQTT_CLIENTS address '172.16.13.100' # Shelly EM3
+set firewall group address-group FW_AG_MQTT_CLIENTS_IOT address '172.16.13.100' # Shelly EM3
+set firewall group address-group FW_AG_MQTT_CLIENTS_HOME address '172.16.12.102' # 
+set firewall group address-group FW_AG_MQTT_CLIENTS_HOME address '172.16.12.105' #
+
+# PLEX client devices
+set firewall group address-group FW_AG_PLEX_CLIENTS_IOT address '172.16.13.100'
+set firewall group address-group FW_AG_PLEX_CLIENTS_IOT address '172.16.13.101'
+set firewall group address-group FW_AG_PLEX_CLIENTS_HOME address '172.16.12.100'
 
 # Vyos containers addresses
 set firewall group address-group FW_AG_VYOS_OMADA address '10.11.11.6'
@@ -45,4 +61,4 @@ set firewall group address-group FW_AG_VYOS_DNSDIST address '10.11.11.5'
 set firewall group address-group FW_AG_VYOS_COREDNS address '10.11.11.9'
 
 # Port groups
-set firewall group port-group wireguard port '51820'
+set firewall group port-group FW_PG_WIREGUARD port '51820'
