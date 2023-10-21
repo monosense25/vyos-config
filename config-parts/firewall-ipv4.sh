@@ -162,155 +162,413 @@ set firewall ipv4 input  filter rule 10 action accept
 set firewall ipv4 input  filter rule 10 source group address-group FW_AG_ROUTER_ADDR_IPV4
 set firewall ipv4 input  filter rule 10 destination group address-group FW_AG_ROUTER_ADDR_IPV4
 
-begin_traffic  to containers
-handle_traffic to containers from guest iot lan servers trusted video wan local
-end_traffic    to containers
-
-begin_traffic  to guest
-handle_traffic to guest from containers iot lan servers trusted video wan local
-end_traffic    to guest
-
-begin_traffic  to iot
-handle_traffic to iot from containers guest lan servers trusted video wan local
-end_traffic    to iot
-
-begin_traffic  to lan
-handle_traffic to lan from containers guest iot servers trusted video wan local
-end_traffic    to lan
-
-begin_traffic  to servers
-handle_traffic to servers from containers guest iot lan trusted video wan local
-end_traffic    to servers
-
-begin_traffic  to trusted
-handle_traffic to trusted from containers guest iot lan servers video wan local
-end_traffic    to trusted
-
-begin_traffic  to video
-handle_traffic to video from containers guest iot lan servers trusted wan local
-end_traffic    to video
-
-begin_traffic  to wan
-handle_traffic to wan from containers guest iot lan servers trusted video local
-end_traffic    to wan
-
 begin_traffic  to local
-handle_traffic to local from containers guest iot lan servers trusted video wan
+handle_traffic to local from mgmt infra home iot cctv containers wan
 end_traffic    to local
 
-## MGMT
-# From MGMT to IOT
-set firewall ipv4 name trusted-iot default-action 'accept'
-set firewall ipv4 name trusted-iot description 'From TRUSTED to IOT'
-set firewall ipv4 name trusted-iot rule 110 action 'accept'
-set firewall ipv4 name trusted-iot rule 110 description 'Rule: accept_tcp_from_sonos_controllers_to_sonos_players'
-set firewall ipv4 name trusted-iot rule 110 destination port '1400,1443,4444,7000,30000-65535'
-set firewall ipv4 name trusted-iot rule 110 protocol 'tcp'
-set firewall ipv4 name trusted-iot rule 110 source group address-group 'sonos_controllers'
-set firewall ipv4 name trusted-iot rule 111 action 'accept'
-set firewall ipv4 name trusted-iot rule 111 description 'Rule: accept_udp_from_sonos_controllers_to_sonos_players'
-set firewall ipv4 name trusted-iot rule 111 destination port '319,320,30000-65535'
-set firewall ipv4 name trusted-iot rule 111 protocol 'udp'
-set firewall ipv4 name trusted-iot rule 111 source group address-group 'sonos_controllers'
-set firewall ipv4 name trusted-iot rule 999 action 'drop'
-set firewall ipv4 name trusted-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-iot rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-iot rule 999 log 'enable'
+begin_traffic  to mgmt
+handle_traffic to mgmt from local infra home iot cctv containers wan
+end_traffic    to mgmt
 
-# From MGMT to HOME
-set firewall ipv4 name trusted-lan default-action 'accept'
-set firewall ipv4 name trusted-lan description 'From MGMT to HOME'
-set firewall ipv4 name trusted-lan rule 999 action 'drop'
-set firewall ipv4 name trusted-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-lan rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-lan rule 999 log 'enable'
+begin_traffic  to infra
+handle_traffic to infra from local mgmt home iot cctv containers wan
+end_traffic    to infra
 
+begin_traffic  to home
+handle_traffic to home from local mgmt infra iot cctv containers wan
+end_traffic    to home
+
+begin_traffic  to iot
+handle_traffic to iot from local mgmt infra home cctv containers wan
+end_traffic    to iot
+
+begin_traffic  to cctv
+handle_traffic to cctv from local mgmt infra home iot containers wan
+end_traffic    to cctv
+
+begin_traffic  to containers
+handle_traffic to containers local mgmt infra home iot cctv wan 
+end_traffic    to containers
+
+begin_traffic  to wan
+handle_traffic to wan from local mgmt infra home iot cctv containers
+end_traffic    to wan
+
+############################################################################################################ 
+# VYOS / LOCAL
+############################################################################################################
+# From VYOS to MGMT
+set firewall ipv4 name local-mgmt default-action 'drop'
+set firewall ipv4 name local-mgmt description 'From LOCAL to MGMT'
+set firewall ipv4 name local-mgmt enable-default-log
+set firewall ipv4 name local-mgmt rule 100 action 'accept'
+set firewall ipv4 name local-mgmt rule 100 description 'Rule: accept_igmp'
+set firewall ipv4 name local-mgmt rule 100 protocol '2'
+set firewall ipv4 name local-mgmt rule 110 action 'accept'
+set firewall ipv4 name local-mgmt rule 110 description 'Rule: accept_mdns'
+set firewall ipv4 name local-mgmt rule 110 destination port 'mdns'
+set firewall ipv4 name local-mgmt rule 110 protocol 'udp'
+set firewall ipv4 name local-mgmt rule 110 source port 'mdns'
+set firewall ipv4 name local-mgmt rule 400 action 'accept'
+set firewall ipv4 name local-mgmt rule 400 description 'Rule: accept_wireguard'
+set firewall ipv4 name local-mgmt rule 400 source port '51820'
+set firewall ipv4 name local-mgmt rule 400 protocol 'udp'
+set firewall ipv4 name local-mgmt rule 999 action 'drop'
+set firewall ipv4 name local-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name local-mgmt rule 999 log 'enable'
+
+# From VYOS to INFRA
+set firewall ipv4 name local-infra default-action 'drop'
+set firewall ipv4 name local-infra description 'From VYOS to INFRA'
+set firewall ipv4 name local-infra enable-default-log
+set firewall ipv4 name local-infra rule 40 action 'accept'
+set firewall ipv4 name local-infra rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name local-infra rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name local-infra rule 40 protocol 'tcp_udp'
+set firewall ipv4 name local-infra rule 70 action 'accept'
+set firewall ipv4 name local-infra rule 70 description 'Rule: accept_bgp'
+set firewall ipv4 name local-infra rule 70 destination port 'bgp'
+set firewall ipv4 name local-infra rule 70 protocol 'tcp'
+set firewall ipv4 name local-infra rule 100 action 'accept'
+set firewall ipv4 name local-infra rule 100 description 'Rule: accept_k8s_api'
+set firewall ipv4 name local-infra rule 100 destination port '6443'
+set firewall ipv4 name local-infra rule 100 protocol 'tcp'
+set firewall ipv4 name local-infra rule 200 action 'accept'
+set firewall ipv4 name local-infra rule 200 description 'Rule: accept_vector_syslog'
+set firewall ipv4 name local-infra rule 200 destination group address-group 'FW_AG_K8S_VECTOR_SVC'
+set firewall ipv4 name local-infra rule 200 destination port '6001'
+set firewall ipv4 name local-infra rule 200 protocol 'tcp'
+set firewall ipv4 name local-infra rule 999 action 'drop'
+set firewall ipv4 name local-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-infra rule 999 state invalid 'enable'
+set firewall ipv4 name local-infra rule 999 log 'enable'
+
+# From VYOS to HOME
+set firewall ipv4 name local-home default-action 'drop'
+set firewall ipv4 name local-home description 'From VYOS to HOME'
+set firewall ipv4 name local-home enable-default-log
+set firewall ipv4 name local-home rule 999 action 'drop'
+set firewall ipv4 name local-homehome rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-home rule 999 state invalid 'enable'
+set firewall ipv4 name local-home rule 999 log 'enable'
+
+# From VYOS to IOT
+set firewall ipv4 name local-iot default-action 'drop'
+set firewall ipv4 name local-iot description 'From VYOS to IOT'
+set firewall ipv4 name local-iot enable-default-log
+set firewall ipv4 name local-iot rule 100 action 'accept'
+set firewall ipv4 name local-iot rule 100 description 'Rule: accept_igmp'
+set firewall ipv4 name local-iot rule 100 protocol '2'
+set firewall ipv4 name local-iot rule 110 action 'accept'
+set firewall ipv4 name local-iot rule 110 description 'Rule: accept_mdns'
+set firewall ipv4 name local-iot rule 110 destination port 'mdns'
+set firewall ipv4 name local-iot rule 110 protocol 'udp'
+set firewall ipv4 name local-iot rule 110 source port 'mdns'
+set firewall ipv4 name local-iot rule 999 action 'drop'
+set firewall ipv4 name local-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-iot rule 999 state invalid 'enable'
+set firewall ipv4 name local-iot rule 999 log 'enable'
+
+# From VYOS to CCTV
+set firewall ipv4 name local-cctv default-action 'drop'
+set firewall ipv4 name local-cctv description 'From VYOS to CCTV'
+set firewall ipv4 name local-cctv enable-default-log
+set firewall ipv4 name local-cctv rule 999 action 'drop'
+set firewall ipv4 name local-cctv rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-cctv rule 999 state invalid 'enable'
+set firewall ipv4 name local-cctv rule 999 log 'enable'
+
+# From VYOS to CONTAINERS
+set firewall ipv4 name local-containers default-action 'accept'
+set firewall ipv4 name local-containers description 'From LOCAL to CONTAINERS'
+set firewall ipv4 name local-containers rule 40 action 'accept'
+set firewall ipv4 name local-containers rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name local-containers rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name local-containers rule 40 protocol 'tcp_udp'
+set firewall ipv4 name local-containers rule 999 action 'drop'
+set firewall ipv4 name local-containers rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name local-containers rule 999 state invalid 'enable'
+set firewall ipv4 name local-containers rule 999 log 'enable'
+
+# From VYOS to WAN
+set firewall ipv4 name local-wan default-action 'accept'
+set firewall ipv4 name local-wan description 'From VYOS to WAN'
+
+
+############################################################################################################ 
+# MANAGEMENT
+############################################################################################################
 # From MGMT to VYOS
-set firewall ipv4 name trusted-local default-action 'drop'
-set firewall ipv4 name trusted-local description 'From TRUSTED to VYOS'
-set firewall ipv4 name trusted-local enable-default-log
-set firewall ipv4 name trusted-local rule 50 action 'accept'
-set firewall ipv4 name trusted-local rule 50 description 'Rule: accept_dhcp'
-set firewall ipv4 name trusted-local rule 50 destination port '67,68'
-set firewall ipv4 name trusted-local rule 50 protocol 'udp'
-set firewall ipv4 name trusted-local rule 50 source port '67,68'
-set firewall ipv4 name trusted-local rule 60 action 'accept'
-set firewall ipv4 name trusted-local rule 60 description 'Rule: accept_ntp'
-set firewall ipv4 name trusted-local rule 60 destination port 'ntp'
-set firewall ipv4 name trusted-local rule 60 protocol 'udp'
-set firewall ipv4 name trusted-local rule 100 action 'accept'
-set firewall ipv4 name trusted-local rule 100 description 'Rule: accept_igmp'
-set firewall ipv4 name trusted-local rule 100 protocol '2'
-set firewall ipv4 name trusted-local rule 110 action 'accept'
-set firewall ipv4 name trusted-local rule 110 description 'Rule: accept_mdns'
-set firewall ipv4 name trusted-local rule 110 destination port 'mdns'
-set firewall ipv4 name trusted-local rule 110 protocol 'udp'
-set firewall ipv4 name trusted-local rule 110 source port 'mdns'
-set firewall ipv4 name trusted-local rule 210 action 'accept'
-set firewall ipv4 name trusted-local rule 210 description 'Rule: accept_discovery_from_sonos_controllers'
-set firewall ipv4 name trusted-local rule 210 destination group port-group sonos-controller-discovery
-set firewall ipv4 name trusted-local rule 210 protocol 'udp'
-set firewall ipv4 name trusted-local rule 210 source group address-group 'sonos_controllers'
-set firewall ipv4 name trusted-local rule 211 action 'accept'
-set firewall ipv4 name trusted-local rule 211 description 'Rule: accept_discovery_from_sonos_players'
-set firewall ipv4 name trusted-local rule 211 destination group port-group sonos-player-discovery
-set firewall ipv4 name trusted-local rule 211 protocol 'udp'
-set firewall ipv4 name trusted-local rule 211 source group address-group 'sonos_players'
-set firewall ipv4 name trusted-local rule 300 action 'accept'
-set firewall ipv4 name trusted-local rule 300 description 'Rule: accept_discovery_from_bambu_printers'
-set firewall ipv4 name trusted-local rule 300 destination group port-group bambu-discovery
-set firewall ipv4 name trusted-local rule 300 protocol 'udp'
-set firewall ipv4 name trusted-local rule 300 source group address-group 'bambu-printers'
-set firewall ipv4 name trusted-local rule 400 action 'accept'
-set firewall ipv4 name trusted-local rule 400 description 'Rule: accept_ssh'
-set firewall ipv4 name trusted-local rule 400 destination port 'ssh'
-set firewall ipv4 name trusted-local rule 400 protocol 'tcp'
-set firewall ipv4 name trusted-local rule 410 action 'accept'
-set firewall ipv4 name trusted-local rule 410 description 'Rule: accept_vyos_api'
-set firewall ipv4 name trusted-local rule 410 destination port '8443'
-set firewall ipv4 name trusted-local rule 410 protocol 'tcp'
-set firewall ipv4 name trusted-local rule 420 action 'accept'
-set firewall ipv4 name trusted-local rule 420 description 'Rule: accept_wireguard'
-set firewall ipv4 name trusted-local rule 420 destination port '51820'
-set firewall ipv4 name trusted-local rule 420 protocol 'udp'
-set firewall ipv4 name trusted-local rule 999 action 'drop'
-set firewall ipv4 name trusted-local rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-local rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-local rule 999 log 'enable'
+set firewall ipv4 name mgmt-local default-action 'drop'
+set firewall ipv4 name mgmt-local description 'From mgmt to VYOS'
+set firewall ipv4 name mgmt-local enable-default-log
+set firewall ipv4 name mgmt-local rule 50 action 'accept'
+set firewall ipv4 name mgmt-local rule 50 description 'Rule: accept_dhcp'
+set firewall ipv4 name mgmt-local rule 50 destination port '67,68'
+set firewall ipv4 name mgmt-local rule 50 protocol 'udp'
+set firewall ipv4 name mgmt-local rule 50 source port '67,68'
+set firewall ipv4 name mgmt-local rule 60 action 'accept'
+set firewall ipv4 name mgmt-local rule 60 description 'Rule: accept_ntp'
+set firewall ipv4 name mgmt-local rule 60 destination port 'ntp'
+set firewall ipv4 name mgmt-local rule 60 protocol 'udp'
+set firewall ipv4 name mgmt-local rule 100 action 'accept'
+set firewall ipv4 name mgmt-local rule 100 description 'Rule: accept_igmp'
+set firewall ipv4 name mgmt-local rule 100 protocol '2'
+set firewall ipv4 name mgmt-local rule 110 action 'accept'
+set firewall ipv4 name mgmt-local rule 110 description 'Rule: accept_mdns'
+set firewall ipv4 name mgmt-local rule 110 destination port 'mdns'
+set firewall ipv4 name mgmt-local rule 110 protocol 'udp'
+set firewall ipv4 name mgmt-local rule 110 source port 'mdns'
+set firewall ipv4 name mgmt-local rule 400 action 'accept'
+set firewall ipv4 name mgmt-local rule 400 description 'Rule: accept_ssh'
+set firewall ipv4 name mgmt-local rule 400 destination port 'ssh'
+set firewall ipv4 name mgmt-local rule 400 protocol 'tcp'
+set firewall ipv4 name mgmt-local rule 410 action 'accept'
+set firewall ipv4 name mgmt-local rule 410 description 'Rule: accept_vyos_api'
+set firewall ipv4 name mgmt-local rule 410 destination port '8443'
+set firewall ipv4 name mgmt-local rule 410 protocol 'tcp'
+set firewall ipv4 name mgmt-local rule 420 action 'accept'
+set firewall ipv4 name mgmt-local rule 420 description 'Rule: accept_wireguard'
+set firewall ipv4 name mgmt-local rule 420 destination port '51820'
+set firewall ipv4 name mgmt-local rule 420 protocol 'udp'
+set firewall ipv4 name mgmt-local rule 999 action 'drop'
+set firewall ipv4 name mgmt-local rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-local rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-local rule 999 log 'enable'
 
 # From MGMT to INFRA
-set firewall ipv4 name trusted-servers default-action 'accept'
-set firewall ipv4 name trusted-servers description 'From MGMT to INFRA'
-set firewall ipv4 name trusted-servers rule 999 action 'drop'
-set firewall ipv4 name trusted-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-servers rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-servers rule 999 log 'enable'
+set firewall ipv4 name mgmt-infra default-action 'accept'
+set firewall ipv4 name mgmt-infra description 'From MGMT to INFRA'
+set firewall ipv4 name mgmt-infra rule 999 action 'drop'
+set firewall ipv4 name mgmt-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-infra rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-infra rule 999 log 'enable'
 
-# From MGMT to CONTAINERS
-set firewall ipv4 name trusted-containers default-action 'accept'
-set firewall ipv4 name trusted-containers description 'From MGMT to CONTAINERS'
-set firewall ipv4 name trusted-containers rule 40 action 'accept'
-set firewall ipv4 name trusted-containers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name trusted-containers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name trusted-containers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name trusted-containers rule 999 action 'drop'
-set firewall ipv4 name trusted-containers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-containers rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-containers rule 999 log 'enable'
+# From MGMT to HOME
+set firewall ipv4 name mgmt-home default-action 'accept'
+set firewall ipv4 name mgmt-home description 'From MGMT to HOME'
+set firewall ipv4 name mgmt-home rule 999 action 'drop'
+set firewall ipv4 name mgmt-home rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-home rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-home rule 999 log 'enable'
+
+# From MGMT to IOT
+set firewall ipv4 name mgmt-iot default-action 'accept'
+set firewall ipv4 name mgmt-iot description 'From MGMT to IOT'
+set firewall ipv4 name mgmt-iot rule 999 action 'drop'
+set firewall ipv4 name mgmt-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-iot rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-iot rule 999 log 'enable'
 
 # From MGMT to CCTV
-set firewall ipv4 name trusted-video default-action 'accept'
-set firewall ipv4 name trusted-video description 'From MGMT to CCTV'
-set firewall ipv4 name trusted-video rule 999 action 'drop'
-set firewall ipv4 name trusted-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name trusted-video rule 999 state invalid 'enable'
-set firewall ipv4 name trusted-video rule 999 log 'enable'
+set firewall ipv4 name mgmt-cctv default-action 'accept'
+set firewall ipv4 name mgmt-cctv description 'From MGMT to CCTV'
+set firewall ipv4 name mgmt-cctv rule 999 action 'drop'
+set firewall ipv4 name mgmt-cctv rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-cctv rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-cctv rule 999 log 'enable'
+
+# From MGMT to CONTAINERS
+set firewall ipv4 name mgmt-containers default-action 'accept'
+set firewall ipv4 name mgmt-containers description 'From MGMT to CONTAINERS'
+set firewall ipv4 name mgmt-containers rule 40 action 'accept'
+set firewall ipv4 name mgmt-containers rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name mgmt-containers rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name mgmt-containers rule 40 protocol 'tcp_udp'
+set firewall ipv4 name mgmt-containers rule 999 action 'drop'
+set firewall ipv4 name mgmt-containers rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name mgmt-containers rule 999 state invalid 'enable'
+set firewall ipv4 name mgmt-containers rule 999 log 'enable'
 
 # From MGMT to WAN
-set firewall ipv4 name trusted-wan default-action 'accept'
-set firewall ipv4 name trusted-wan description 'From MGMT to WAN'
+set firewall ipv4 name mgmt-wan default-action 'accept'
+set firewall ipv4 name mgmt-wan description 'From MGMT to WAN'
 
+############################################################################################################ 
+# INFRA
+############################################################################################################
+# From INFRA to VYOS
+set firewall ipv4 name infra-local default-action 'drop'
+set firewall ipv4 name infra-local description 'From INFRA to VYOS'
+set firewall ipv4 name infra-local enable-default-log
+set firewall ipv4 name infra-local rule 50 action 'accept'
+set firewall ipv4 name infra-local rule 50 description 'Rule: accept_dhcp'
+set firewall ipv4 name infra-local rule 50 destination port '67,68'
+set firewall ipv4 name infra-local rule 50 protocol 'udp'
+set firewall ipv4 name infra-local rule 50 source port '67,68'
+set firewall ipv4 name infra-local rule 60 action 'accept'
+set firewall ipv4 name infra-local rule 60 description 'Rule: accept_ntp'
+set firewall ipv4 name infra-local rule 60 destination port 'ntp'
+set firewall ipv4 name infra-local rule 60 protocol 'udp'
+set firewall ipv4 name infra-local rule 70 action 'accept'
+set firewall ipv4 name infra-local rule 70 description 'Rule: accept_bgp'
+set firewall ipv4 name infra-local rule 70 destination port 'bgp'
+set firewall ipv4 name infra-local rule 70 protocol 'tcp'
+set firewall ipv4 name infra-local rule 80 action 'accept'
+set firewall ipv4 name infra-local rule 80 description 'Rule: accept_tftp'
+set firewall ipv4 name infra-local rule 80 destination port '69'
+set firewall ipv4 name infra-local rule 80 protocol 'udp'
+set firewall ipv4 name infra-local rule 100 action 'accept'
+set firewall ipv4 name infra-local rule 100 description 'Rule: accept_node_exporter_from_k8s_nodes'
+set firewall ipv4 name infra-local rule 100 destination port '9100'
+set firewall ipv4 name infra-local rule 100 protocol 'tcp'
+set firewall ipv4 name infra-local rule 100 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-local rule 110 action 'accept'
+set firewall ipv4 name infra-local rule 110 description 'Rule: accept_speedtest_exporter_from_k8s_nodes'
+set firewall ipv4 name infra-local rule 110 destination port '9798'
+set firewall ipv4 name infra-local rule 110 protocol 'tcp'
+set firewall ipv4 name infra-local rule 110 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-local rule 999 action 'drop'
+set firewall ipv4 name infra-local rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-local rule 999 state invalid 'enable'
+set firewall ipv4 name infra-local rule 999 log 'enable'
+
+# From INFRA to MGMT
+set firewall ipv4 name infra-mgmt default-action 'drop'
+set firewall ipv4 name infra-mgmt description 'From INFRA to MGMT'
+set firewall ipv4 name infra-mgmt enable-default-log
+set firewall ipv4 name infra-mgmt rule 999 action 'drop'
+set firewall ipv4 name infra-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name infra-mgmt rule 999 log 'enable'
+
+# From INFRA to HOME
+set firewall ipv4 name infra-home default-action 'drop'
+set firewall ipv4 name infra-home description 'From INFTA to HOME'
+set firewall ipv4 name infra-home enable-default-log
+set firewall ipv4 name infra-home rule 999 action 'drop'
+set firewall ipv4 name infra-home rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-home rule 999 state invalid 'enable'
+set firewall ipv4 name infra-home rule 999 log 'enable'
+
+# From INFRA to IOT
+set firewall ipv4 name infra-iot default-action 'drop'
+set firewall ipv4 name infra-iot description 'From INFRA to IOT'
+set firewall ipv4 name infra-iot enable-default-log
+set firewall ipv4 name infra-iot rule 100 action 'accept'
+set firewall ipv4 name infra-iot rule 100 description 'Rule: accept_k8s_nodes'
+set firewall ipv4 name infra-iot rule 100 protocol 'tcp'
+set firewall ipv4 name infra-iot rule 100 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-iot rule 110 action 'accept'
+set firewall ipv4 name infra-iot rule 110 description 'Rule: accept_k8s_nodes'
+set firewall ipv4 name infra-iot rule 110 protocol 'icmp'
+set firewall ipv4 name infra-iot rule 110 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-iot rule 999 action 'drop'
+set firewall ipv4 name infra-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-iot rule 999 state invalid 'enable'
+set firewall ipv4 name infra-iot rule 999 log 'enable'
+
+# From INFRA to CCTV
+set firewall ipv4 name infra-cctv default-action 'drop'
+set firewall ipv4 name infra-cctv description 'From INFRA to CCTV'
+set firewall ipv4 name infra-cctv enable-default-log
+set firewall ipv4 name infra-cctv rule 100 action 'accept'
+set firewall ipv4 name infra-cctv rule 100 description 'Rule: accept_k8s_nodes'
+set firewall ipv4 name infra-cctv rule 100 protocol 'tcp_udp'
+set firewall ipv4 name infra-cctv rule 100 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-cctv rule 999 action 'drop'
+set firewall ipv4 name infra-cctv rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-cctv rule 999 state invalid 'enable'
+set firewall ipv4 name infra-cctv rule 999 log 'enable'
+
+# From INFRA to CONTAINERS
+set firewall ipv4 name infra-containers default-action 'accept'
+set firewall ipv4 name infra-containers description 'From INFRA to CONTAINERS'
+set firewall ipv4 name infra-containers enable-default-log
+set firewall ipv4 name infra-containers rule 40 action 'accept'
+set firewall ipv4 name infra-containers rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name infra-containers rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name infra-containers rule 40 protocol 'tcp_udp'
+set firewall ipv4 name infra-containers rule 100 action 'accept'
+set firewall ipv4 name infra-containers rule 100 description 'Rule: accept_k8s_nodes'
+set firewall ipv4 name infra-containers rule 100 protocol 'tcp'
+set firewall ipv4 name infra-containers rule 100 source group address-group 'k8s_nodes'
+set firewall ipv4 name infra-containers rule 999 action 'drop'
+set firewall ipv4 name infra-containers rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name infra-containers rule 999 state invalid 'enable'
+set firewall ipv4 name infra-containers rule 999 log 'enable'
+
+# From INFRA to WAN
+set firewall ipv4 name infra-wan default-action 'accept'
+set firewall ipv4 name infra-wan description 'From INFRA to WAN'
+
+############################################################################################################ 
+# HOME
+############################################################################################################
+# From HOME to VYOS
+set firewall ipv4 name home-local default-action 'drop'
+set firewall ipv4 name home-local description 'From HOME to VYOS'
+set firewall ipv4 name home-local enable-default-log
+set firewall ipv4 name home-local rule 50 action 'accept'
+set firewall ipv4 name home-local rule 50 description 'Rule: accept_dhcp'
+set firewall ipv4 name home-local rule 50 destination port '67,68'
+set firewall ipv4 name home-local rule 50 protocol 'udp'
+set firewall ipv4 name home-local rule 50 source port '67,68'
+set firewall ipv4 name home-local rule 60 action 'accept'
+set firewall ipv4 name home-local rule 60 description 'Rule: accept_ntp'
+set firewall ipv4 name home-local rule 60 destination port 'ntp'
+set firewall ipv4 name home-local rule 60 protocol 'udp'
+set firewall ipv4 name home-local rule 999 action 'drop'
+set firewall ipv4 name home-local rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-local rule 999 state invalid 'enable'
+set firewall ipv4 name home-local rule 999 log 'enable'
+
+# From HOME to MGMT
+set firewall ipv4 name home-mgmt default-action 'drop'
+set firewall ipv4 name home-mgmt description 'From HOME to MGMT'
+set firewall ipv4 name home-mgmt enable-default-log
+set firewall ipv4 name home-mgmt rule 999 action 'drop'
+set firewall ipv4 name home-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name home-mgmt rule 999 log 'enable'
+
+# From HOME to INFRA
+set firewall ipv4 name home-infra default-action 'drop'
+set firewall ipv4 name home-infra description 'From HOME to INFRA'
+set firewall ipv4 name home-infra enable-default-log
+set firewall ipv4 name home-infra rule 999 action 'drop'
+set firewall ipv4 name home-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-infra rule 999 state invalid 'enable'
+set firewall ipv4 name home-infra rule 999 log 'enable'
+
+# From HOME to IOT
+set firewall ipv4 name home-iot default-action 'drop'
+set firewall ipv4 name home-iot description 'From HOME to IOT'
+set firewall ipv4 name home-iot enable-default-log
+set firewall ipv4 name home-iot rule 999 action 'drop'
+set firewall ipv4 name home-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-iot rule 999 state invalid 'enable'
+set firewall ipv4 name home-iot rule 999 log 'enable'
+
+# From HOME to CCTV
+set firewall ipv4 name home-video default-action 'drop'
+set firewall ipv4 name home-video description 'From HOME to CCTV'
+set firewall ipv4 name home-video enable-default-log
+set firewall ipv4 name home-video rule 999 action 'drop'
+set firewall ipv4 name home-video rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-video rule 999 state invalid 'enable'
+set firewall ipv4 name home-video rule 999 log 'enable'
+
+# From HOME to CONTAINERS
+set firewall ipv4 name home-containers default-action 'accept'
+set firewall ipv4 name home-containers description 'From HOME to CONTAINERS'
+set firewall ipv4 name home-containers rule 40 action 'accept'
+set firewall ipv4 name home-containers rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name home-containers rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name home-containers rule 40 protocol 'tcp_udp'
+set firewall ipv4 name home-containers rule 999 action 'drop'
+set firewall ipv4 name home-containers rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name home-containers rule 999 state invalid 'enable'
+set firewall ipv4 name home-containers rule 999 log 'enable'
+
+# From HOME to WAN
+set firewall ipv4 name home-wan default-action 'accept'
+set firewall ipv4 name home-wan description 'From HOME to WAN'
+
+############################################################################################################ 
 # IOT
+############################################################################################################
 # From IOT to VYOS
 set firewall ipv4 name iot-local default-action 'drop'
 set firewall ipv4 name iot-local description 'From IOT to VYOS'
@@ -332,16 +590,6 @@ set firewall ipv4 name iot-local rule 110 description 'Rule: accept_mdns'
 set firewall ipv4 name iot-local rule 110 destination port 'mdns'
 set firewall ipv4 name iot-local rule 110 protocol 'udp'
 set firewall ipv4 name iot-local rule 110 source port 'mdns'
-set firewall ipv4 name iot-local rule 200 action 'accept'
-set firewall ipv4 name iot-local rule 200 description 'Rule: accept_discovery_from_sonos_players'
-set firewall ipv4 name iot-local rule 200 destination group port-group sonos-player-discovery
-set firewall ipv4 name iot-local rule 200 protocol 'udp'
-set firewall ipv4 name iot-local rule 200 source group address-group 'sonos_players'
-set firewall ipv4 name iot-local rule 300 action 'accept'
-set firewall ipv4 name iot-local rule 300 description 'Rule: accept_discovery_from_bambu_printers'
-set firewall ipv4 name iot-local rule 300 destination group port-group bambu-discovery
-set firewall ipv4 name iot-local rule 300 protocol 'udp'
-set firewall ipv4 name iot-local rule 300 source group address-group 'bambu-printers'
 set firewall ipv4 name iot-local rule 999 action 'drop'
 set firewall ipv4 name iot-local rule 999 description 'Rule: drop_invalid'
 set firewall ipv4 name iot-local rule 999 state invalid 'enable'
@@ -358,7 +606,7 @@ set firewall ipv4 name iot-mgmt rule 999 log 'enable'
 
 # From IOT to INFRA
 set firewall ipv4 name iot-infra default-action 'drop'
-set firewall ipv4 name iot-infra description 'From IOT to SERVERS'
+set firewall ipv4 name iot-infra description 'From IOT to infra'
 set firewall ipv4 name iot-infra enable-default-log
 set firewall ipv4 name iot-infra rule 100 action 'accept'
 set firewall ipv4 name iot-infra rule 100 description 'Rule: accept_nas_smb_from_scanners'
@@ -437,351 +685,12 @@ set firewall ipv4 name iot-containers rule 999 log 'enable'
 set firewall ipv4 name iot-wan default-action 'accept'
 set firewall ipv4 name iot-wan description 'From IOT to WAN'
 
-# From LAN to GUEST
-set firewall ipv4 name lan-guest default-action 'drop'
-set firewall ipv4 name lan-guest description 'From LAN to GUEST'
-set firewall ipv4 name lan-guest enable-default-log
-set firewall ipv4 name lan-guest rule 999 action 'drop'
-set firewall ipv4 name lan-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-guest rule 999 state invalid 'enable'
-set firewall ipv4 name lan-guest rule 999 log 'enable'
-
-# From LAN to GUEST
-set firewall ipv4 name lan-iot default-action 'drop'
-set firewall ipv4 name lan-iot description 'From LAN to IOT'
-set firewall ipv4 name lan-iot enable-default-log
-set firewall ipv4 name lan-iot rule 999 action 'drop'
-set firewall ipv4 name lan-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-iot rule 999 state invalid 'enable'
-set firewall ipv4 name lan-iot rule 999 log 'enable'
-
-# From LAN to LOCAL
-set firewall ipv4 name lan-local default-action 'drop'
-set firewall ipv4 name lan-local description 'From LAN to LOCAL'
-set firewall ipv4 name lan-local enable-default-log
-set firewall ipv4 name lan-local rule 50 action 'accept'
-set firewall ipv4 name lan-local rule 50 description 'Rule: accept_dhcp'
-set firewall ipv4 name lan-local rule 50 destination port '67,68'
-set firewall ipv4 name lan-local rule 50 protocol 'udp'
-set firewall ipv4 name lan-local rule 50 source port '67,68'
-set firewall ipv4 name lan-local rule 60 action 'accept'
-set firewall ipv4 name lan-local rule 60 description 'Rule: accept_ntp'
-set firewall ipv4 name lan-local rule 60 destination port 'ntp'
-set firewall ipv4 name lan-local rule 60 protocol 'udp'
-set firewall ipv4 name lan-local rule 999 action 'drop'
-set firewall ipv4 name lan-local rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-local rule 999 state invalid 'enable'
-set firewall ipv4 name lan-local rule 999 log 'enable'
-
-# From LAN to SERVERS
-set firewall ipv4 name lan-servers default-action 'drop'
-set firewall ipv4 name lan-servers description 'From LAN to SERVERS'
-set firewall ipv4 name lan-servers enable-default-log
-set firewall ipv4 name lan-servers rule 999 action 'drop'
-set firewall ipv4 name lan-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-servers rule 999 state invalid 'enable'
-set firewall ipv4 name lan-servers rule 999 log 'enable'
-
-# From LAN to CONTAINERS
-set firewall ipv4 name lan-containers default-action 'accept'
-set firewall ipv4 name lan-containers description 'From LAN to CONTAINERS'
-set firewall ipv4 name lan-containers rule 40 action 'accept'
-set firewall ipv4 name lan-containers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name lan-containers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name lan-containers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name lan-containers rule 999 action 'drop'
-set firewall ipv4 name lan-containers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-containers rule 999 state invalid 'enable'
-set firewall ipv4 name lan-containers rule 999 log 'enable'
-
-# From LAN to TRUSTED
-set firewall ipv4 name lan-trusted default-action 'drop'
-set firewall ipv4 name lan-trusted description 'From LAN to TRUSTED'
-set firewall ipv4 name lan-trusted enable-default-log
-set firewall ipv4 name lan-trusted rule 999 action 'drop'
-set firewall ipv4 name lan-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name lan-trusted rule 999 log 'enable'
-
-# From LAN to VIDEO
-set firewall ipv4 name lan-video default-action 'drop'
-set firewall ipv4 name lan-video description 'From LAN to VIDEO'
-set firewall ipv4 name lan-video enable-default-log
-set firewall ipv4 name lan-video rule 999 action 'drop'
-set firewall ipv4 name lan-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name lan-video rule 999 state invalid 'enable'
-set firewall ipv4 name lan-video rule 999 log 'enable'
-
-# From LAN to WAN
-set firewall ipv4 name lan-wan default-action 'accept'
-set firewall ipv4 name lan-wan description 'From LAN to WAN'
-
-# From LOCAL to GUEST
-set firewall ipv4 name local-guest default-action 'drop'
-set firewall ipv4 name local-guest description 'From LOCAL to GUEST'
-set firewall ipv4 name local-guest enable-default-log
-set firewall ipv4 name local-guest rule 999 action 'drop'
-set firewall ipv4 name local-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-guest rule 999 state invalid 'enable'
-set firewall ipv4 name local-guest rule 999 log 'enable'
-
-# From LOCAL to IOT
-set firewall ipv4 name local-iot default-action 'drop'
-set firewall ipv4 name local-iot description 'From LOCAL to IOT'
-set firewall ipv4 name local-iot enable-default-log
-set firewall ipv4 name local-iot rule 100 action 'accept'
-set firewall ipv4 name local-iot rule 100 description 'Rule: accept_igmp'
-set firewall ipv4 name local-iot rule 100 protocol '2'
-set firewall ipv4 name local-iot rule 110 action 'accept'
-set firewall ipv4 name local-iot rule 110 description 'Rule: accept_mdns'
-set firewall ipv4 name local-iot rule 110 destination port 'mdns'
-set firewall ipv4 name local-iot rule 110 protocol 'udp'
-set firewall ipv4 name local-iot rule 110 source port 'mdns'
-set firewall ipv4 name local-iot rule 200 action 'accept'
-set firewall ipv4 name local-iot rule 200 description 'Rule: accept_discovery_from_sonos_controllers'
-set firewall ipv4 name local-iot rule 200 destination group port-group sonos-controller-discovery
-set firewall ipv4 name local-iot rule 200 protocol 'udp'
-set firewall ipv4 name local-iot rule 200 source group address-group 'sonos_controllers'
-set firewall ipv4 name local-iot rule 999 action 'drop'
-set firewall ipv4 name local-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-iot rule 999 state invalid 'enable'
-set firewall ipv4 name local-iot rule 999 log 'enable'
-
-# From LOCAL to LAN
-set firewall ipv4 name local-lan default-action 'drop'
-set firewall ipv4 name local-lan description 'From LOCAL to LAN'
-set firewall ipv4 name local-lan enable-default-log
-set firewall ipv4 name local-lan rule 999 action 'drop'
-set firewall ipv4 name local-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-lan rule 999 state invalid 'enable'
-set firewall ipv4 name local-lan rule 999 log 'enable'
-
-# From LOCAL to SERVERS
-set firewall ipv4 name local-servers default-action 'drop'
-set firewall ipv4 name local-servers description 'From LOCAL to SERVERS'
-set firewall ipv4 name local-servers enable-default-log
-set firewall ipv4 name local-servers rule 40 action 'accept'
-set firewall ipv4 name local-servers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name local-servers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name local-servers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name local-servers rule 70 action 'accept'
-set firewall ipv4 name local-servers rule 70 description 'Rule: accept_bgp'
-set firewall ipv4 name local-servers rule 70 destination port 'bgp'
-set firewall ipv4 name local-servers rule 70 protocol 'tcp'
-set firewall ipv4 name local-servers rule 100 action 'accept'
-set firewall ipv4 name local-servers rule 100 description 'Rule: accept_k8s_api'
-set firewall ipv4 name local-servers rule 100 destination port '6443'
-set firewall ipv4 name local-servers rule 100 protocol 'tcp'
-set firewall ipv4 name local-servers rule 200 action 'accept'
-set firewall ipv4 name local-servers rule 200 description 'Rule: accept_vector_syslog'
-set firewall ipv4 name local-servers rule 200 destination group address-group 'k8s_vector_aggregator'
-set firewall ipv4 name local-servers rule 200 destination port '6001'
-set firewall ipv4 name local-servers rule 200 protocol 'tcp'
-set firewall ipv4 name local-servers rule 999 action 'drop'
-set firewall ipv4 name local-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-servers rule 999 state invalid 'enable'
-set firewall ipv4 name local-servers rule 999 log 'enable'
-
-# From LOCAL to CONTAINERS
-set firewall ipv4 name local-containers default-action 'accept'
-set firewall ipv4 name local-containers description 'From LOCAL to CONTAINERS'
-set firewall ipv4 name local-containers rule 40 action 'accept'
-set firewall ipv4 name local-containers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name local-containers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name local-containers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name local-containers rule 999 action 'drop'
-set firewall ipv4 name local-containers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-containers rule 999 state invalid 'enable'
-set firewall ipv4 name local-containers rule 999 log 'enable'
-
-# From LOCAL to TRUSTED
-set firewall ipv4 name local-trusted default-action 'drop'
-set firewall ipv4 name local-trusted description 'From LOCAL to TRUSTED'
-set firewall ipv4 name local-trusted enable-default-log
-set firewall ipv4 name local-trusted rule 100 action 'accept'
-set firewall ipv4 name local-trusted rule 100 description 'Rule: accept_igmp'
-set firewall ipv4 name local-trusted rule 100 protocol '2'
-set firewall ipv4 name local-trusted rule 110 action 'accept'
-set firewall ipv4 name local-trusted rule 110 description 'Rule: accept_mdns'
-set firewall ipv4 name local-trusted rule 110 destination port 'mdns'
-set firewall ipv4 name local-trusted rule 110 protocol 'udp'
-set firewall ipv4 name local-trusted rule 110 source port 'mdns'
-set firewall ipv4 name local-trusted rule 200 action 'accept'
-set firewall ipv4 name local-trusted rule 200 description 'Rule: accept_discovery_from_sonos_players'
-set firewall ipv4 name local-trusted rule 200 destination group port-group sonos-player-discovery
-set firewall ipv4 name local-trusted rule 200 protocol 'udp'
-set firewall ipv4 name local-trusted rule 200 source group address-group 'sonos_players'
-set firewall ipv4 name local-trusted rule 300 action 'accept'
-set firewall ipv4 name local-trusted rule 300 description 'Rule: accept_discovery_from_bambu_printers'
-set firewall ipv4 name local-trusted rule 300 destination group port-group bambu-discovery
-set firewall ipv4 name local-trusted rule 300 protocol 'udp'
-set firewall ipv4 name local-trusted rule 300 source group address-group 'bambu-printers'
-set firewall ipv4 name local-trusted rule 400 action 'accept'
-set firewall ipv4 name local-trusted rule 400 description 'Rule: accept_wireguard'
-set firewall ipv4 name local-trusted rule 400 source port '51820'
-set firewall ipv4 name local-trusted rule 400 protocol 'udp'
-set firewall ipv4 name local-trusted rule 999 action 'drop'
-set firewall ipv4 name local-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name local-trusted rule 999 log 'enable'
-
-# From LOCAL to VIDEO
-set firewall ipv4 name local-video default-action 'drop'
-set firewall ipv4 name local-video description 'From LOCAL to VIDEO'
-set firewall ipv4 name local-video enable-default-log
-set firewall ipv4 name local-video rule 999 action 'drop'
-set firewall ipv4 name local-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name local-video rule 999 state invalid 'enable'
-set firewall ipv4 name local-video rule 999 log 'enable'
-
-# From LOCAL to WAN
-set firewall ipv4 name local-wan default-action 'accept'
-set firewall ipv4 name local-wan description 'From LOCAL to WAN'
-
-# From SERVERS to GUEST
-set firewall ipv4 name servers-guest default-action 'drop'
-set firewall ipv4 name servers-guest description 'From SERVERS to GUEST'
-set firewall ipv4 name servers-guest enable-default-log
-set firewall ipv4 name servers-guest rule 999 action 'drop'
-set firewall ipv4 name servers-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-guest rule 999 state invalid 'enable'
-set firewall ipv4 name servers-guest rule 999 log 'enable'
-
-# From SERVERS to IOT
-set firewall ipv4 name servers-iot default-action 'drop'
-set firewall ipv4 name servers-iot description 'From SERVERS to IOT'
-set firewall ipv4 name servers-iot enable-default-log
-set firewall ipv4 name servers-iot rule 100 action 'accept'
-set firewall ipv4 name servers-iot rule 100 description 'Rule: accept_k8s_nodes'
-set firewall ipv4 name servers-iot rule 100 protocol 'tcp'
-set firewall ipv4 name servers-iot rule 100 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-iot rule 110 action 'accept'
-set firewall ipv4 name servers-iot rule 110 description 'Rule: accept_k8s_nodes'
-set firewall ipv4 name servers-iot rule 110 protocol 'icmp'
-set firewall ipv4 name servers-iot rule 110 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-iot rule 999 action 'drop'
-set firewall ipv4 name servers-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-iot rule 999 state invalid 'enable'
-set firewall ipv4 name servers-iot rule 999 log 'enable'
-
-# From SERVERS to LAN
-set firewall ipv4 name servers-lan default-action 'drop'
-set firewall ipv4 name servers-lan description 'From SERVERS to LAN'
-set firewall ipv4 name servers-lan enable-default-log
-set firewall ipv4 name servers-lan rule 999 action 'drop'
-set firewall ipv4 name servers-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-lan rule 999 state invalid 'enable'
-set firewall ipv4 name servers-lan rule 999 log 'enable'
-
-# From SERVERS to LOCAL
-set firewall ipv4 name servers-local default-action 'drop'
-set firewall ipv4 name servers-local description 'From SERVERS to LOCAL'
-set firewall ipv4 name servers-local enable-default-log
-set firewall ipv4 name servers-local rule 50 action 'accept'
-set firewall ipv4 name servers-local rule 50 description 'Rule: accept_dhcp'
-set firewall ipv4 name servers-local rule 50 destination port '67,68'
-set firewall ipv4 name servers-local rule 50 protocol 'udp'
-set firewall ipv4 name servers-local rule 50 source port '67,68'
-set firewall ipv4 name servers-local rule 60 action 'accept'
-set firewall ipv4 name servers-local rule 60 description 'Rule: accept_ntp'
-set firewall ipv4 name servers-local rule 60 destination port 'ntp'
-set firewall ipv4 name servers-local rule 60 protocol 'udp'
-set firewall ipv4 name servers-local rule 70 action 'accept'
-set firewall ipv4 name servers-local rule 70 description 'Rule: accept_bgp'
-set firewall ipv4 name servers-local rule 70 destination port 'bgp'
-set firewall ipv4 name servers-local rule 70 protocol 'tcp'
-set firewall ipv4 name servers-local rule 80 action 'accept'
-set firewall ipv4 name servers-local rule 80 description 'Rule: accept_tftp'
-set firewall ipv4 name servers-local rule 80 destination port '69'
-set firewall ipv4 name servers-local rule 80 protocol 'udp'
-set firewall ipv4 name servers-local rule 100 action 'accept'
-set firewall ipv4 name servers-local rule 100 description 'Rule: accept_node_exporter_from_k8s_nodes'
-set firewall ipv4 name servers-local rule 100 destination port '9100'
-set firewall ipv4 name servers-local rule 100 protocol 'tcp'
-set firewall ipv4 name servers-local rule 100 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-local rule 110 action 'accept'
-set firewall ipv4 name servers-local rule 110 description 'Rule: accept_speedtest_exporter_from_k8s_nodes'
-set firewall ipv4 name servers-local rule 110 destination port '9798'
-set firewall ipv4 name servers-local rule 110 protocol 'tcp'
-set firewall ipv4 name servers-local rule 110 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-local rule 999 action 'drop'
-set firewall ipv4 name servers-local rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-local rule 999 state invalid 'enable'
-set firewall ipv4 name servers-local rule 999 log 'enable'
-
-# From SERVERS to CONTAINERS
-set firewall ipv4 name servers-containers default-action 'accept'
-set firewall ipv4 name servers-containers description 'From SERVERS to CONTAINERS'
-set firewall ipv4 name servers-containers enable-default-log
-set firewall ipv4 name servers-containers rule 40 action 'accept'
-set firewall ipv4 name servers-containers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name servers-containers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name servers-containers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name servers-containers rule 100 action 'accept'
-set firewall ipv4 name servers-containers rule 100 description 'Rule: accept_k8s_nodes'
-set firewall ipv4 name servers-containers rule 100 protocol 'tcp'
-set firewall ipv4 name servers-containers rule 100 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-containers rule 999 action 'drop'
-set firewall ipv4 name servers-containers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-containers rule 999 state invalid 'enable'
-set firewall ipv4 name servers-containers rule 999 log 'enable'
-
-# From SERVERS to TRUSTED
-set firewall ipv4 name servers-trusted default-action 'drop'
-set firewall ipv4 name servers-trusted description 'From SERVERS to TRUSTED'
-set firewall ipv4 name servers-trusted enable-default-log
-set firewall ipv4 name servers-trusted rule 999 action 'drop'
-set firewall ipv4 name servers-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name servers-trusted rule 999 log 'enable'
-
-# From SERVERS to VIDEO
-set firewall ipv4 name servers-video default-action 'drop'
-set firewall ipv4 name servers-video description 'From SERVERS to VIDEO'
-set firewall ipv4 name servers-video enable-default-log
-set firewall ipv4 name servers-video rule 100 action 'accept'
-set firewall ipv4 name servers-video rule 100 description 'Rule: accept_k8s_nodes'
-set firewall ipv4 name servers-video rule 100 protocol 'tcp_udp'
-set firewall ipv4 name servers-video rule 100 source group address-group 'k8s_nodes'
-set firewall ipv4 name servers-video rule 999 action 'drop'
-set firewall ipv4 name servers-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name servers-video rule 999 state invalid 'enable'
-set firewall ipv4 name servers-video rule 999 log 'enable'
-
-# From SERVERS to WAN
-set firewall ipv4 name servers-wan default-action 'accept'
-set firewall ipv4 name servers-wan description 'From SERVERS to WAN'
-
-# From CONTAINERS to GUEST
-set firewall ipv4 name containers-guest default-action 'drop'
-set firewall ipv4 name containers-guest description 'From CONTAINERS to GUEST'
-set firewall ipv4 name containers-guest enable-default-log
-set firewall ipv4 name containers-guest rule 999 action 'drop'
-set firewall ipv4 name containers-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-guest rule 999 state invalid 'enable'
-set firewall ipv4 name containers-guest rule 999 log 'enable'
-
-# From CONTAINERS to IOT
-set firewall ipv4 name containers-iot default-action 'drop'
-set firewall ipv4 name containers-iot description 'From CONTAINERS to IOT'
-set firewall ipv4 name containers-iot enable-default-log
-set firewall ipv4 name containers-iot rule 999 action 'drop'
-set firewall ipv4 name containers-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-iot rule 999 state invalid 'enable'
-set firewall ipv4 name containers-iot rule 999 log 'enable'
-
-# From CONTAINERS to LAN
-set firewall ipv4 name containers-lan default-action 'drop'
-set firewall ipv4 name containers-lan description 'From CONTAINERS to LAN'
-set firewall ipv4 name containers-lan enable-default-log
-set firewall ipv4 name containers-lan rule 999 action 'drop'
-set firewall ipv4 name containers-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-lan rule 999 state invalid 'enable'
-set firewall ipv4 name containers-lan rule 999 log 'enable'
-
-# From CONTAINERS to LOCAL
+############################################################################################################ 
+# CONTAINERS
+############################################################################################################
+# From CONTAINERS to VYOS
 set firewall ipv4 name containers-local default-action 'drop'
-set firewall ipv4 name containers-local description 'From CONTAINERS to LOCAL'
+set firewall ipv4 name containers-local description 'From CONTAINERS to VYOS'
 set firewall ipv4 name containers-local enable-default-log
 set firewall ipv4 name containers-local rule 50 action 'accept'
 set firewall ipv4 name containers-local rule 50 description 'Rule: accept_dhcp'
@@ -797,157 +706,144 @@ set firewall ipv4 name containers-local rule 999 description 'Rule: drop_invalid
 set firewall ipv4 name containers-local rule 999 state invalid 'enable'
 set firewall ipv4 name containers-local rule 999 log 'enable'
 
-# From CONTAINERS to SERVERS
-set firewall ipv4 name containers-servers default-action 'accept'
-set firewall ipv4 name containers-servers description 'From CONTAINERS to SERVERS'
-set firewall ipv4 name containers-servers rule 999 action 'drop'
-set firewall ipv4 name containers-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-servers rule 999 state invalid 'enable'
-set firewall ipv4 name containers-servers rule 999 log 'enable'
+# From CONTAINERS to MGMT
+set firewall ipv4 name containers-mgmt default-action 'drop'
+set firewall ipv4 name containers-mgmt description 'From CONTAINERS to MGMT'
+set firewall ipv4 name containers-mgmt enable-default-log
+set firewall ipv4 name containers-mgmt rule 999 action 'drop'
+set firewall ipv4 name containers-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name containers-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name containers-mgmt rule 999 log 'enable'
 
-# From CONTAINERS to TRUSTED
-set firewall ipv4 name containers-trusted default-action 'drop'
-set firewall ipv4 name containers-trusted description 'From CONTAINERS to TRUSTED'
-set firewall ipv4 name containers-trusted enable-default-log
-set firewall ipv4 name containers-trusted rule 999 action 'drop'
-set firewall ipv4 name containers-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name containers-trusted rule 999 log 'enable'
+# From CONTAINERS to INFRA
+set firewall ipv4 name containers-infra default-action 'accept'
+set firewall ipv4 name containers-infra description 'From CONTAINERS to INFRA'
+set firewall ipv4 name containers-infra rule 999 action 'drop'
+set firewall ipv4 name containers-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name containers-infra rule 999 state invalid 'enable'
+set firewall ipv4 name containers-infra rule 999 log 'enable'
 
-# From CONTAINERS to VIDEO
-set firewall ipv4 name containers-video default-action 'drop'
-set firewall ipv4 name containers-video description 'From CONTAINERS to VIDEO'
-set firewall ipv4 name containers-video enable-default-log
-set firewall ipv4 name containers-video rule 999 action 'drop'
-set firewall ipv4 name containers-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name containers-video rule 999 state invalid 'enable'
-set firewall ipv4 name containers-video rule 999 log 'enable'
+# From CONTAINERS to HOME
+set firewall ipv4 name containers-home default-action 'drop'
+set firewall ipv4 name containers-home description 'From CONTAINERS to HOME'
+set firewall ipv4 name containers-home enable-default-log
+set firewall ipv4 name containers-home rule 999 action 'drop'
+set firewall ipv4 name containers-home rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name containers-home rule 999 state invalid 'enable'
+set firewall ipv4 name containers-home rule 999 log 'enable'
+
+# From CONTAINERS to IOT
+set firewall ipv4 name containers-iot default-action 'drop'
+set firewall ipv4 name containers-iot description 'From CONTAINERS to IOT'
+set firewall ipv4 name containers-iot enable-default-log
+set firewall ipv4 name containers-iot rule 999 action 'drop'
+set firewall ipv4 name containers-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name containers-iot rule 999 state invalid 'enable'
+set firewall ipv4 name containers-iot rule 999 log 'enable'
+
+# From CONTAINERS to CCTV
+set firewall ipv4 name containers-cctv default-action 'drop'
+set firewall ipv4 name containers-cctv description 'From CONTAINERS to CCTV'
+set firewall ipv4 name containers-cctv enable-default-log
+set firewall ipv4 name containers-cctv rule 999 action 'drop'
+set firewall ipv4 name containers-cctv rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name containers-cctv rule 999 state invalid 'enable'
+set firewall ipv4 name containers-cctv rule 999 log 'enable'
 
 # From CONTAINERS to WAN
 set firewall ipv4 name containers-wan default-action 'accept'
 set firewall ipv4 name containers-wan description 'From CONTAINERS to WAN'
 
+############################################################################################################ 
+# CCTV
+############################################################################################################
+# From CCTV to VYOS
+set firewall ipv4 name cctv-local default-action 'drop'
+set firewall ipv4 name cctv-local description 'From CCTV to VYOS'
+set firewall ipv4 name cctv-local enable-default-log
+set firewall ipv4 name cctv-local rule 50 action 'accept'
+set firewall ipv4 name cctv-local rule 50 description 'Rule: accept_dhcp'
+set firewall ipv4 name cctv-local rule 50 destination port '67,68'
+set firewall ipv4 name cctv-local rule 50 protocol 'udp'
+set firewall ipv4 name cctv-local rule 50 source port '67,68'
+set firewall ipv4 name cctv-local rule 60 action 'accept'
+set firewall ipv4 name cctv-local rule 60 description 'Rule: accept_ntp'
+set firewall ipv4 name cctv-local rule 60 destination port 'ntp'
+set firewall ipv4 name cctv-local rule 60 protocol 'udp'
+set firewall ipv4 name cctv-local rule 999 action 'drop'
+set firewall ipv4 name cctv-local rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-local rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-local rule 999 log 'enable'
+
+# From CCTV to MGMT
+set firewall ipv4 name cctv-mgmt default-action 'drop'
+set firewall ipv4 name cctv-mgmt description 'From CCTV to MGMT'
+set firewall ipv4 name cctv-mgmt enable-default-log
+set firewall ipv4 name cctv-mgmt rule 999 action 'drop'
+set firewall ipv4 name cctv-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-mgmt rule 999 log 'enable'
+
+# From CCTV to INFRA
+set firewall ipv4 name cctv-infra default-action 'drop'
+set firewall ipv4 name cctv-infra description 'From CCTV to INFRA'
+set firewall ipv4 name cctv-infra enable-default-log
+set firewall ipv4 name cctv-infra rule 100 action 'accept'
+set firewall ipv4 name cctv-infra rule 100 description 'Rule: accept_k8s_nodes'
+set firewall ipv4 name cctv-infra rule 100 protocol 'udp'
+set firewall ipv4 name cctv-infra rule 100 destination group address-group 'k8s_nodes'
+set firewall ipv4 name cctv-infra rule 100 source port '6987-6989'
+set firewall ipv4 name cctv-infra rule 999 action 'drop'
+set firewall ipv4 name cctv-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-infra rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-infra rule 999 log 'enable'
+
+# From CCTV to HOME
+set firewall ipv4 name cctv-home default-action 'drop'
+set firewall ipv4 name cctv-home description 'From CCTV to HOME'
+set firewall ipv4 name cctv-home enable-default-log
+set firewall ipv4 name cctv-home rule 999 action 'drop'
+set firewall ipv4 name cctv-home rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-home rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-home rule 999 log 'enable'
+
+# From CCTV to IOT
+set firewall ipv4 name cctv-iot default-action 'drop'
+set firewall ipv4 name cctv-iot description 'From CCTV to IOT'
+set firewall ipv4 name cctv-iot enable-default-log
+set firewall ipv4 name cctv-iot rule 100 action 'accept'
+set firewall ipv4 name cctv-iot rule 100 description 'Rule: allow connecting to hass'
+set firewall ipv4 name cctv-iot rule 100 protocol 'tcp'
+set firewall ipv4 name cctv-iot rule 100 destination group address-group 'k8s_hass'
+set firewall ipv4 name cctv-iot rule 100 destination port '8123'
+set firewall ipv4 name cctv-iot rule 999 action 'drop'
+set firewall ipv4 name cctv-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-iot rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-iot rule 999 log 'enable'
+
+# From CCTV to CONTAINERS
+set firewall ipv4 name cctv-containers default-action 'accept'
+set firewall ipv4 name cctv-containers description 'From CCTV to CONTAINERS'
+set firewall ipv4 name cctv-containers rule 40 action 'accept'
+set firewall ipv4 name cctv-containers rule 40 description 'Rule: accept_dns'
+set firewall ipv4 name cctv-containers rule 40 destination port 'domain,domain-s'
+set firewall ipv4 name cctv-containers rule 40 protocol 'tcp_udp'
+set firewall ipv4 name cctv-containers rule 999 action 'drop'
+set firewall ipv4 name cctv-containers rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name cctv-containers rule 999 state invalid 'enable'
+set firewall ipv4 name cctv-containers rule 999 log 'enable'
+
+# From CCTV to WAN
+set firewall ipv4 name cctv-wan default-action 'drop'
+set firewall ipv4 name cctv-wan description 'From CCTV to WAN'
 
 
-# From VIDEO to GUEST
-set firewall ipv4 name video-guest default-action 'drop'
-set firewall ipv4 name video-guest description 'From VIDEO to GUEST'
-set firewall ipv4 name video-guest enable-default-log
-set firewall ipv4 name video-guest rule 999 action 'drop'
-set firewall ipv4 name video-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-guest rule 999 state invalid 'enable'
-set firewall ipv4 name video-guest rule 999 log 'enable'
-
-# From VIDEO to IOT
-set firewall ipv4 name video-iot default-action 'drop'
-set firewall ipv4 name video-iot description 'From VIDEO to IOT'
-set firewall ipv4 name video-iot enable-default-log
-set firewall ipv4 name video-iot rule 100 action 'accept'
-set firewall ipv4 name video-iot rule 100 description 'Rule: allow connecting to hass'
-set firewall ipv4 name video-iot rule 100 protocol 'tcp'
-set firewall ipv4 name video-iot rule 100 destination group address-group 'k8s_hass'
-set firewall ipv4 name video-iot rule 100 destination port '8123'
-set firewall ipv4 name video-iot rule 999 action 'drop'
-set firewall ipv4 name video-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-iot rule 999 state invalid 'enable'
-set firewall ipv4 name video-iot rule 999 log 'enable'
-
-# From VIDEO to LAN
-set firewall ipv4 name video-lan default-action 'drop'
-set firewall ipv4 name video-lan description 'From VIDEO to LAN'
-set firewall ipv4 name video-lan enable-default-log
-set firewall ipv4 name video-lan rule 999 action 'drop'
-set firewall ipv4 name video-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-lan rule 999 state invalid 'enable'
-set firewall ipv4 name video-lan rule 999 log 'enable'
-
-# From VIDEO to LOCAL
-set firewall ipv4 name video-local default-action 'drop'
-set firewall ipv4 name video-local description 'From VIDEO to LOCAL'
-set firewall ipv4 name video-local enable-default-log
-set firewall ipv4 name video-local rule 50 action 'accept'
-set firewall ipv4 name video-local rule 50 description 'Rule: accept_dhcp'
-set firewall ipv4 name video-local rule 50 destination port '67,68'
-set firewall ipv4 name video-local rule 50 protocol 'udp'
-set firewall ipv4 name video-local rule 50 source port '67,68'
-set firewall ipv4 name video-local rule 60 action 'accept'
-set firewall ipv4 name video-local rule 60 description 'Rule: accept_ntp'
-set firewall ipv4 name video-local rule 60 destination port 'ntp'
-set firewall ipv4 name video-local rule 60 protocol 'udp'
-set firewall ipv4 name video-local rule 999 action 'drop'
-set firewall ipv4 name video-local rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-local rule 999 state invalid 'enable'
-set firewall ipv4 name video-local rule 999 log 'enable'
-
-# From VIDEO to SERVERS
-set firewall ipv4 name video-servers default-action 'drop'
-set firewall ipv4 name video-servers description 'From VIDEO to SERVERS'
-set firewall ipv4 name video-servers enable-default-log
-set firewall ipv4 name video-servers rule 100 action 'accept'
-set firewall ipv4 name video-servers rule 100 description 'Rule: accept_k8s_nodes'
-set firewall ipv4 name video-servers rule 100 protocol 'udp'
-set firewall ipv4 name video-servers rule 100 destination group address-group 'k8s_nodes'
-set firewall ipv4 name video-servers rule 100 source port '6987-6989'
-set firewall ipv4 name video-servers rule 999 action 'drop'
-set firewall ipv4 name video-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-servers rule 999 state invalid 'enable'
-set firewall ipv4 name video-servers rule 999 log 'enable'
-
-# From VIDEO to CONTAINERS
-set firewall ipv4 name video-containers default-action 'accept'
-set firewall ipv4 name video-containers description 'From VIDEO to CONTAINERS'
-set firewall ipv4 name video-containers rule 40 action 'accept'
-set firewall ipv4 name video-containers rule 40 description 'Rule: accept_dns'
-set firewall ipv4 name video-containers rule 40 destination port 'domain,domain-s'
-set firewall ipv4 name video-containers rule 40 protocol 'tcp_udp'
-set firewall ipv4 name video-containers rule 999 action 'drop'
-set firewall ipv4 name video-containers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-containers rule 999 state invalid 'enable'
-set firewall ipv4 name video-containers rule 999 log 'enable'
-
-# From VIDEO to TRUSTED
-set firewall ipv4 name video-trusted default-action 'drop'
-set firewall ipv4 name video-trusted description 'From VIDEO to TRUSTED'
-set firewall ipv4 name video-trusted enable-default-log
-set firewall ipv4 name video-trusted rule 999 action 'drop'
-set firewall ipv4 name video-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name video-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name video-trusted rule 999 log 'enable'
-
-# From VIDEO to WAN
-set firewall ipv4 name video-wan default-action 'drop'
-set firewall ipv4 name video-wan description 'From VIDEO to WAN'
-
-# From WAN to GUEST
-set firewall ipv4 name wan-guest default-action 'drop'
-set firewall ipv4 name wan-guest description 'From WAN to GUEST'
-set firewall ipv4 name wan-guest enable-default-log
-set firewall ipv4 name wan-guest rule 999 action 'drop'
-set firewall ipv4 name wan-guest rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-guest rule 999 state invalid 'enable'
-set firewall ipv4 name wan-guest rule 999 log 'enable'
-
-# From WAN to IOT
-set firewall ipv4 name wan-iot default-action 'drop'
-set firewall ipv4 name wan-iot description 'From WAN to IOT'
-set firewall ipv4 name wan-iot enable-default-log
-set firewall ipv4 name wan-iot rule 999 action 'drop'
-set firewall ipv4 name wan-iot rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-iot rule 999 state invalid 'enable'
-set firewall ipv4 name wan-iot rule 999 log 'enable'
-
-# From WAN to LAN
-set firewall ipv4 name wan-lan default-action 'drop'
-set firewall ipv4 name wan-lan description 'From WAN to LAN'
-set firewall ipv4 name wan-lan enable-default-log
-set firewall ipv4 name wan-lan rule 999 action 'drop'
-set firewall ipv4 name wan-lan rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-lan rule 999 state invalid 'enable'
-set firewall ipv4 name wan-lan rule 999 log 'enable'
-
-# From WAN to LOCAL
+############################################################################################################ 
+# CCTV
+############################################################################################################
+# From WAN to VYOS
 set firewall ipv4 name wan-local default-action 'drop'
-set firewall ipv4 name wan-local description 'From WAN to LOCAL'
+set firewall ipv4 name wan-local description 'From WAN to VYOS'
 set firewall ipv4 name wan-local enable-default-log
 set firewall ipv4 name wan-local rule 1 action 'drop'
 set firewall ipv4 name wan-local rule 1 description 'Rule: drop_invalid'
@@ -958,14 +854,50 @@ set firewall ipv4 name wan-local rule 100 description 'Rule: accept_wireguard'
 set firewall ipv4 name wan-local rule 100 destination port '51820'
 set firewall ipv4 name wan-local rule 100 protocol 'udp'
 
-# From WAN to SERVERS
-set firewall ipv4 name wan-servers default-action 'drop'
-set firewall ipv4 name wan-servers description 'From WAN to SERVERS'
-set firewall ipv4 name wan-servers enable-default-log
-set firewall ipv4 name wan-servers rule 999 action 'drop'
-set firewall ipv4 name wan-servers rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-servers rule 999 state invalid 'enable'
-set firewall ipv4 name wan-servers rule 999 log 'enable'
+# From WAN to MGMT
+set firewall ipv4 name wan-mgmt default-action 'drop'
+set firewall ipv4 name wan-mgmt description 'From WAN to MGMT'
+set firewall ipv4 name wan-mgmt enable-default-log
+set firewall ipv4 name wan-mgmt rule 999 action 'drop'
+set firewall ipv4 name wan-mgmt rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name wan-mgmt rule 999 state invalid 'enable'
+set firewall ipv4 name wan-mgmt rule 999 log 'enable'
+
+# From WAN to INFRA
+set firewall ipv4 name wan-infra default-action 'drop'
+set firewall ipv4 name wan-infra description 'From WAN to INFRA'
+set firewall ipv4 name wan-infra enable-default-log
+set firewall ipv4 name wan-infra rule 999 action 'drop'
+set firewall ipv4 name wan-infra rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name wan-infra rule 999 state invalid 'enable'
+set firewall ipv4 name wan-infra rule 999 log 'enable'
+
+# From WAN to HOME
+set firewall ipv4 name wan-home default-action 'drop'
+set firewall ipv4 name wan-home description 'From WAN to HOME'
+set firewall ipv4 name wan-home enable-default-log
+set firewall ipv4 name wan-home rule 999 action 'drop'
+set firewall ipv4 name wan-home rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name wan-home rule 999 state invalid 'enable'
+set firewall ipv4 name wan-home rule 999 log 'enable'
+
+# From WAN to IOT
+set firewall ipv4 name wan-iot default-action 'drop'
+set firewall ipv4 name wan-iot description 'From WAN to IOT'
+set firewall ipv4 name wan-iot enable-default-log
+set firewall ipv4 name wan-iot rule 999 action 'drop'
+set firewall ipv4 name wan-iot rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name wan-iot rule 999 state invalid 'enable'
+set firewall ipv4 name wan-iot rule 999 log 'enable'
+
+# From WAN to CCTV
+set firewall ipv4 name wan-cctv default-action 'drop'
+set firewall ipv4 name wan-cctv description 'From WAN to CCTV'
+set firewall ipv4 name wan-cctv enable-default-log
+set firewall ipv4 name wan-cctv rule 999 action 'drop'
+set firewall ipv4 name wan-cctv rule 999 description 'Rule: drop_invalid'
+set firewall ipv4 name wan-cctv rule 999 state invalid 'enable'
+set firewall ipv4 name wan-cctv rule 999 log 'enable'
 
 # From WAN to CONTAINERS
 set firewall ipv4 name wan-containers default-action 'drop'
@@ -975,21 +907,3 @@ set firewall ipv4 name wan-containers rule 999 action 'drop'
 set firewall ipv4 name wan-containers rule 999 description 'Rule: drop_invalid'
 set firewall ipv4 name wan-containers rule 999 state invalid 'enable'
 set firewall ipv4 name wan-containers rule 999 log 'enable'
-
-# From WAN to TRUSTED
-set firewall ipv4 name wan-trusted default-action 'drop'
-set firewall ipv4 name wan-trusted description 'From WAN to TRUSTED'
-set firewall ipv4 name wan-trusted enable-default-log
-set firewall ipv4 name wan-trusted rule 999 action 'drop'
-set firewall ipv4 name wan-trusted rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-trusted rule 999 state invalid 'enable'
-set firewall ipv4 name wan-trusted rule 999 log 'enable'
-
-# From WAN to VIDEO
-set firewall ipv4 name wan-video default-action 'drop'
-set firewall ipv4 name wan-video description 'From WAN to VIDEO'
-set firewall ipv4 name wan-video enable-default-log
-set firewall ipv4 name wan-video rule 999 action 'drop'
-set firewall ipv4 name wan-video rule 999 description 'Rule: drop_invalid'
-set firewall ipv4 name wan-video rule 999 state invalid 'enable'
-set firewall ipv4 name wan-video rule 999 log 'enable'
