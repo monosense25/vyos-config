@@ -17,6 +17,16 @@
 This repository contains my [VyOS](https://docs.vyos.io/en/latest/index.html) configuration in a declarative state.
 Everything I have here can be applied to the machine by running [apply-config.sh](./apply-config.sh) script in the machine.
 
+## :computer:&nbsp; Hardware
+
+**Lenovo Thinkcentre M920x**  :
+- Core i5-8500 3.0GHz 
+- DDR4 2666v 2x16GB
+- Intel NVMe 512GB
+- 1x1Gbps Intel I219-LM (On Board)
+- 2x10Gbps Mellanox Connect-X 3 Pro EN (MCX312B-XCCT)
+
+
 ## :inbox_tray:&nbsp; Quickstart
 
 After installing VyOS in your machine, setup your LAN and WAN interface and make sure it can talk to the internet.
