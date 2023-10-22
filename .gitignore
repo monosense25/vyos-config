@@ -1,0 +1,86 @@
+# Ignore everything
+/*
+
+# Track certain files
+!.gitignore
+!/.sops.yaml
+!/apply-config.sh
+!/bootstrap.sh
+!/secrets.sops.env
+!/LICENSE
+!/README.md
+
+# VyOS bootstrap config
+!/bootstrap/
+/bootstrap/*
+!/bootstrap/*.sh
+
+# VyOS config
+!/config-parts/
+/config-parts/*
+!/config-parts/*.sh
+
+# VyOS scripts
+!/scripts/
+/scripts/*
+!/scripts/*.sh
+!/scripts/*.script
+!/scripts/commit/
+/scripts/commit/*
+!/scripts/commit/pre-hooks.d/
+/scripts/commit/pre-hooks.d/*
+!/scripts/commit/pre-hooks.d/**.sh
+
+# Containers configs
+!/containers/
+/containers/*
+!/containers/adguard/
+/containers/adguard/*
+!/containers/adguard/config/
+/containers/adguard/config/*
+!/containers/adguard/config/AdGuardHome.yaml.bootstrap.tmpl
+!/containers/adguard/work/
+/containers/adguard/work/*
+!/containers/adguard/work/.gitkeep
+
+!/containers/bind/
+/containers/bind/*
+!/containers/bind/config/
+/containers/bind/config/*
+!/containers/bind/config/named.conf.tmpl
+!/containers/bind/config/rndc.key.tmpl
+!/containers/bind/config/externaldns.key.tmpl
+!/containers/bind/config/ddnsupdate.key.tmpl
+!/containers/bind/config/zones/
+/containers/bind/config/zones/*
+!/containers/bind/config/zones/db.*.arpa
+!/containers/bind/config/zones/db.{{*}}
+
+!/containers/dnsdist/
+/containers/dnsdist/*
+!/containers/dnsdist/config/
+/containers/dnsdist/config/*
+!/containers/dnsdist/config/dnsdist.conf
+
+!/containers/haproxy
+/containers/haproxy/*
+!/containers/haproxy/config/
+/containers/haproxy/config/*
+!/containers/haproxy/config/haproxy.cfg
+
+!/containers/omada/
+/containers/omada/*
+!/containers/omada/data/
+/containers/omada/data/*
+!/containers/omada/data/.gitkeep
+!/containers/omada/logs/
+/containers/omada/logs/*
+!/containers/omada/logs/.gitkeep
+
+# CI
+!/.github/
+/.github/*
+!/.github/renovate.json
+!/.github/workflows/
+/.github/workflows/*
+!/.github/workflows/renovate.yaml
