@@ -10,7 +10,7 @@ if mountpoint -q $dest; then
   # Backup VyOS /config
   backup_dest="$dest/vyos"
   if [ ! -d "$backup_dest" ]; then
-    mkdir "$backup_dest"
+    sudo mkdir -p "$backup_dest"
   fi
   tar --exclude="overlay*" --exclude="omada*" -zvcf "$backup_dest/config.$(date +%Y%m%d%H%M%S).tar.gz" /config
 

@@ -610,7 +610,7 @@ set firewall ipv4 name iot-infra description 'From IOT to infra'
 set firewall ipv4 name iot-infra enable-default-log
 set firewall ipv4 name iot-infra rule 100 action 'accept'
 set firewall ipv4 name iot-infra rule 100 description 'Rule: Accept_nas_smb_from_scanners'
-set firewall ipv4 name iot-infra rule 100 destination group address-group 'FW_AG_NAS_ADDR '
+set firewall ipv4 name iot-infra rule 100 destination group address-group 'FW_AG_NAS_ADDR'
 set firewall ipv4 name iot-infra rule 100 destination port 'microsoft-ds'
 set firewall ipv4 name iot-infra rule 100 protocol 'tcp'
 set firewall ipv4 name iot-infra rule 100 source group address-group 'scanners'
