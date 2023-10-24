@@ -67,8 +67,8 @@ $ORIGIN in-addr.arpa.
 110.13.16.172                IN  PTR backyard-booster-pump-plug.monosense.io.
 111.13.16.172                IN  PTR masterbedroom-plug.monosense.io.
 112.13.16.172                IN  PTR farezzbedroom-plug.monosense.io.
-113.13.16.172                IN  PTR office-rack-fans-plug .monosense.io.
-114.13.16.172                IN  PTR guestroom-led-strip .monosense.io.
+113.13.16.172                IN  PTR office-rack-fans-plug.monosense.io.
+114.13.16.172                IN  PTR guestroom-led-strip.monosense.io.
 
 ; CCTV
 ; start from .100-199

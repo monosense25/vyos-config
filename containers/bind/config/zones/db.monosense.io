@@ -3,7 +3,7 @@
 
 ; SOA Records
 $TTL 3600
-$ORIGIN monosense.io
+$ORIGIN monosense.io.
 @ 3600 IN SOA vg.monosense.io. vg.monosense.io. (
   1697718828         ; serial number (epoch timestamp)
   7200               ; refresh period
