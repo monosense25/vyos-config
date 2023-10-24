@@ -11,5 +11,7 @@ set system time-zone 'Asia/Jakarta'
 
 set system sysctl parameter kernel.pty.max value '24000'
 
+set system login user vyos authentication public-keys monosense-okd type 'ssh-ed25519'
 set system login user vyos authentication public-keys monosense-okd key "${SECRET_ADMIN_SSH_KEY1}"
+set system login user vyos authentication public-keys macbook type 'ssh-ed25519'
 set system login user vyos authentication public-keys macbook key "${SECRET_ADMIN_SSH_KEY2}"
