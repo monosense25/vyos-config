@@ -1,22 +1,22 @@
 #!/bin/vbash
 # shellcheck disable=all
 
-set container network CONTAINERS description 'Network for containers'
-set container network CONTAINERS prefix '10.11.11.0/24'
+set container network containers description 'Network for containers'
+set container network containers prefix '10.11.11.0/24'
 
 # adguardhome
-set container name adguardhome cap-add 'net-bind-service'
-set container name adguardhome image 'docker.io/adguard/adguardhome:v0.107.39'
-set container name adguardhome memory '0'
-set container name adguardhome network CONTAINERS address '10.11.11.2'
-set container name adguardhome restart 'on-failure'
-set container name adguardhome shared-memory '0'
-set container name adguardhome volume config source '/config/containers/adguard/config'
-set container name adguardhome volume config destination '/opt/adguardhome/conf'
-set container name adguardhome volume config mode 'rw'
-set container name adguardhome volume work source '/config/containers/adguard/work'
-set container name adguardhome volume work destination '/opt/adguardhome/work'
-set container name adguardhome volume work mode 'rw'
+set container name adguar cap-add 'net-bind-service'
+set container name adguard image 'docker.io/adguard/adguardhome:v0.107.39'
+set container name adguard memory '0'
+set container name adguard network CONTAINERS address '10.11.11.2'
+set container name adguard restart 'on-failure'
+set container name adguard shared-memory '0'
+set container name adguard volume config source '/config/containers/adguard/config'
+set container name adguard volume config destination '/opt/adguardhome/conf'
+set container name adguard volume config mode 'rw'
+set container name adguard volume work source '/config/containers/adguard/work'
+set container name adguard volume work destination '/opt/adguardhome/work'
+set container name adguard volume work mode 'rw'
 
 # bind
 set container name bind cap-add 'net-bind-service'
@@ -72,31 +72,6 @@ set container name omada volume logs destination '/opt/tplink/EAPController/logs
 set container name omada volume logs mode 'rw'
 set container name omada volume logs source '/config/containers/omada/logs'
 
-# # onepassword-connect
-# set container name onepassword-connect image 'docker.io/1password/connect-api:1.7.2'
-# set container name onepassword-connect environment TZ value 'Asia/Jakarta'
-# set container name onepassword-connect memory '0'
-# set container name onepassword-connect network containers address '10.11.11.7'
-# set container name onepassword-connect shared-memory '0'
-# set container name onepassword-connect volume credentials source '/config/secrets/1password-credentials.json'
-# set container name onepassword-connect volume credentials destination '/home/opuser/.op/1password-credentials.json'
-# set container name onepassword-connect volume credentials mode 'ro'
-# set container name onepassword-connect volume data source '/tmp/onepassword/data'
-# set container name onepassword-connect volume data destination '/home/opuser/.op/data'
-# set container name onepassword-connect volume data mode 'rw'
-
-# # onepassword-sync
-# set container name onepassword-sync image 'docker.io/1password/connect-sync:1.7.2'
-# set container name onepassword-sync environment TZ value 'Asia/Jakarta'
-# set container name onepassword-sync memory '0'
-# set container name onepassword-sync shared-memory '0'
-# set container name onepassword-sync network containers address '10.11.11.8'
-# set container name onepassword-sync volume credentials source '/config/secrets/1password-credentials.json'
-# set container name onepassword-sync volume credentials destination '/home/opuser/.op/1password-credentials.json'
-# set container name onepassword-sync volume credentials mode 'ro'
-# set container name onepassword-sync volume data source '/tmp/onepassword/data'
-# set container name onepassword-sync volume data destination '/home/opuser/.op/data'
-# set container name onepassword-sync volume data mode 'rw'
 
 # cloudflare-ddns
 set container name cloudflare-ddns allow-host-networks
