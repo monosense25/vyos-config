@@ -17,8 +17,8 @@ if [ -d "/home/vyos" ]; then
 [gpg]
   format = "ssh"
 [user]
-  email = "budimanjojo@gmail.com"
-  name = "budimanjojo"
+  email = "eko.purwanto@monosense.io"
+  name = "monosense25"
   signingKey = "/config/secrets/id_rsa.pub"
 END
   chown vyos:users /home/vyos/.gitconfig
