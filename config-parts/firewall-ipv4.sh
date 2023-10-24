@@ -785,7 +785,7 @@ set firewall ipv4 name cctv-infra enable-default-log
 set firewall ipv4 name cctv-infra rule 100 action 'accept'
 set firewall ipv4 name cctv-infra rule 100 description 'Rule: Accept_k8s_nodes'
 set firewall ipv4 name cctv-infra rule 100 protocol 'udp'
-set firewall ipv4 name cctv-infra rule 100 destination group address-group 'k8s_nodes'
+set firewall ipv4 name cctv-infra rule 100 destination group address-group 'FW_AG_K8S_WORKER_INFRA_ADDR'
 set firewall ipv4 name cctv-infra rule 100 source port '6987-6989'
 set firewall ipv4 name cctv-infra rule 999 action 'drop'
 set firewall ipv4 name cctv-infra rule 999 description 'Rule: Drop_Invalid'
