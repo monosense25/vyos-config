@@ -1,18 +1,19 @@
 #!/bin/vbash
 # shellcheck disable=all
 
-set protocols bgp system-as '65400'
-set protocols bgp parameters router-id '192.168.200.1'
 
-set protocols bgp neighbor 192.168.200.21 description 'kmaster1'
-set protocols bgp neighbor 192.168.200.21 remote-as '65401'
-set protocols bgp neighbor 192.168.200.21 address-family ipv4-unicast
-set protocols bgp neighbor 192.168.200.21 update-source eth1.200
-set protocols bgp neighbor 192.168.200.22 description 'kmaster2'
-set protocols bgp neighbor 192.168.200.22 remote-as '65401'
-set protocols bgp neighbor 192.168.200.22 address-family ipv4-unicast
-set protocols bgp neighbor 192.168.200.22 update-source eth1.200
-set protocols bgp neighbor 192.168.200.23 description 'kmaster3'
-set protocols bgp neighbor 192.168.200.23 remote-as '65401'
-set protocols bgp neighbor 192.168.200.23 address-family ipv4-unicast
-set protocols bgp neighbor 192.168.200.23 update-source eth1.200
+set protocols bgp neighbor 172.16.11.13 address-family ipv4-unicast
+set protocols bgp neighbor 172.16.11.13 description 'k8s-w0'
+set protocols bgp neighbor 172.16.11.13 remote-as '64512'
+set protocols bgp neighbor 172.16.11.14 address-family ipv4-unicast
+set protocols bgp neighbor 172.16.11.14 description 'k8s-w1'
+set protocols bgp neighbor 172.16.11.14 remote-as '64512'
+set protocols bgp neighbor 172.16.11.15 address-family ipv4-unicast
+set protocols bgp neighbor 172.16.11.15 description 'k8s-w2'
+set protocols bgp neighbor 172.16.11.15 remote-as '64512'
+set protocols bgp neighbor 172.16.11.16 address-family ipv4-unicast
+set protocols bgp neighbor 172.16.11.16 description 'k8s-w3'
+set protocols bgp neighbor 172.16.11.16 remote-as '64512'
+set protocols bgp parameters router-id '172.16.10.254'
+set protocols bgp system-as '64512'
+
