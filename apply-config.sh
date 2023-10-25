@@ -93,7 +93,6 @@ load /opt/vyatta/etc/config.boot.default
 mkdir -p /tmp/bind/cache
 sudo chown -R 104 /tmp/bind/cache
 
-
 # Load all config files
 for f in /config/config-parts/*.sh; do
   if [ -f "${f}" ]; then
