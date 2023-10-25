@@ -3,19 +3,19 @@
 
 # Force DNS
 set nat destination rule 102 description 'Force DNS for IOT VLAN'
-set nat destination rule 102 destination address '!10.11.11.2'
+set nat destination rule 102 destination address '!172.16.16.5'
 set nat destination rule 102 destination port '53'
 set nat destination rule 102 inbound-interface 'bond0.1613'
 set nat destination rule 102 protocol 'tcp_udp'
-set nat destination rule 102 translation address '10.11.11.2'
+set nat destination rule 102 translation address '172.16.16.5'
 set nat destination rule 102 translation port '53'
 
 set nat destination rule 103 description 'Force DNS for CCTV VLAN'
-set nat destination rule 103 destination address '!10.11.11.2'
+set nat destination rule 103 destination address '!172.16.16.5'
 set nat destination rule 103 destination port '53'
 set nat destination rule 103 inbound-interface 'bond0.1614'
 set nat destination rule 103 protocol 'tcp_udp'
-set nat destination rule 103 translation address '10.11.11.2'
+set nat destination rule 103 translation address '172.16.16.5'
 set nat destination rule 103 translation port '53'
 
 # Force NTP
