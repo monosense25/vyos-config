@@ -20,7 +20,7 @@ set service dhcp-server shared-network-name MANAGEMENT ping-check
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 subnet-parameters 'option omada-address 10.11.11.6;'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 default-router '172.16.10.254'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 lease '86400'
-set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 name-server '10.11.11.5'
+set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 name-server '172.16.16.5'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 range 0 start '172.16.10.200'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 range 0 stop '172.16.10.253'
 # Static Mapping MGMT
@@ -41,7 +41,7 @@ set service dhcp-server shared-network-name INFRA ping-check
 set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 default-router '172.16.11.254'
 set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 domain-name 'monosense.io'
 set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 lease '86400'
-set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 name-server '10.11.11.5'
+set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 name-server '172.16.16.5'
 set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 range 0 start '172.16.11.200'
 set service dhcp-server shared-network-name INFRA subnet 172.16.11.0/24 range 0 stop '172.16.11.253'
 # Static Mapping INFRA
@@ -66,7 +66,7 @@ set service dhcp-server shared-network-name HOME ping-check
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 default-router '172.16.12.254'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 domain-name 'monosense.io'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 lease '86400'
-set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 name-server '10.11.11.5'
+set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 name-server '172.16.16.5'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 range 0 start '172.16.12.200'
 set service dhcp-server shared-network-name HOME subnet 172.16.12.0/24 range 0 stop '172.16.12.253'
 # Static Mapping HOME
@@ -91,7 +91,7 @@ set service dhcp-server shared-network-name IOT ping-check
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 default-router '172.16.13.254'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 domain-name 'monosense.io'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 lease '86400'
-set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 name-server '10.11.11.5'
+set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 name-server '172.16.16.5'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 range 0 start '172.16.13.200'
 set service dhcp-server shared-network-name IOT subnet 172.16.13.0/24 range 0 stop '172.16.13.253'
 # Static Mapping IoT
@@ -138,7 +138,7 @@ set service dhcp-server shared-network-name CCTV ping-check
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 default-router '172.16.14.254'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 domain-name 'monosense.io'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 lease '86400'
-set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 name-server '10.11.11.5'
+set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 name-server '172.16.16.5'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 range 0 start '172.16.14.200'
 set service dhcp-server shared-network-name CCTV subnet 172.16.14.0/24 range 0 stop '172.16.14.253'
 # Static Mapping CCTV

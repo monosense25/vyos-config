@@ -1,4 +1,5 @@
 #!/bin/vbash
+# shellcheck disable=all
 
 # Configure forward filter:
 #   forward_rule <rule_number> <inbound_interface_group> <outbound_interface_group> accept
@@ -25,7 +26,6 @@ function forward_rule {
     drop)
       set firewall ipv4 forward filter rule $rule action $action
       set firewall ipv4 forward filter rule $rule outbound-interface interface-group IG_$outbound
-      set firewall ipv4 forward filter rule $rule log 'enable'
       ;;
     jump)
       set firewall ipv4 forward filter rule $rule action $action
@@ -55,7 +55,6 @@ function input_rule {
   case $action in
     drop)
       set firewall ipv4 input filter rule $rule action $action
-      set firewall ipv4 input filter rule $rule log 'enable'
       ;;
     jump)
       set firewall ipv4 input filter rule $rule action $action
@@ -84,7 +83,6 @@ function output_rule {
   case $action in
     drop)
       set firewall ipv4 output filter rule $rule action $action
-      set firewall ipv4 output filter rule $rule log 'enable'
       ;;
     jump)
       set firewall ipv4 output filter rule $rule action $action
@@ -96,20 +94,17 @@ function output_rule {
   output_rule_number=$((output_rule_number+5))
 }
 
-function begin_traffic {
-  shift # Ignore $1 which is "to"
-  interface=$1
-
-  if ! test "$interface" == "local"; then
-    forward_rule $interface $interface accept
-  fi
-}
-
 function handle_traffic {
   shift # Ignore $1 which is to
   outbound=$1
   shift
   shift # Ignore next word which is from
+
+  # begin traffic
+  if ! test "$outbound" == "local"; then
+    forward_rule $outbound $outbound accept
+  fi
+
   for inbound in $*; do
     if test "$outbound" == "local"; then
       input_rule $inbound jump
@@ -119,12 +114,8 @@ function handle_traffic {
       forward_rule $inbound $outbound jump
     fi
   done
-}
 
-function end_traffic {
-  shift # Ignore $1 which is "to"
-  outbound=$1
-
+  # end traffic
   if test "$outbound" == "local"; then
     input_rule any drop
     output_rule any drop
@@ -137,22 +128,28 @@ function end_traffic {
 set firewall ipv4 forward filter default-action 'accept'
 set firewall ipv4 forward filter rule 1 action 'accept'
 set firewall ipv4 forward filter rule 1 state established 'enable'
-set firewall ipv4 forward filter rule 2 action 'accept'
-set firewall ipv4 forward filter rule 2 state related 'enable'
+set firewall ipv4 forward filter rule 2 action 'drop'
+set firewall ipv4 forward filter rule 2 state invalid 'enable'
+set firewall ipv4 forward filter rule 3 action 'accept'
+set firewall ipv4 forward filter rule 3 state related 'enable'
 
 # Default input policy
 set firewall ipv4 input filter default-action 'accept'
 set firewall ipv4 input filter rule 1 action 'accept'
 set firewall ipv4 input filter rule 1 state established 'enable'
-set firewall ipv4 input filter rule 2 action 'accept'
-set firewall ipv4 input filter rule 2 state related 'enable'
+set firewall ipv4 input filter rule 2 action 'drop'
+set firewall ipv4 input filter rule 2 state invalid 'enable'
+set firewall ipv4 input filter rule 3 action 'accept'
+set firewall ipv4 input filter rule 3 state related 'enable'
 
 # Default output policy
 set firewall ipv4 output filter default-action 'accept'
 set firewall ipv4 output filter rule 1 action 'accept'
 set firewall ipv4 output filter rule 1 state established 'enable'
-set firewall ipv4 output filter rule 2 action 'accept'
-set firewall ipv4 output filter rule 2 state related 'enable'
+set firewall ipv4 output filter rule 2 action 'drop'
+set firewall ipv4 output filter rule 2 state invalid 'enable'
+set firewall ipv4 output filter rule 3 action 'accept'
+set firewall ipv4 output filter rule 3 state related 'enable'
 
 # Ensure VyOS can talk to itself
 set firewall ipv4 output filter rule 10 action accept
@@ -162,37 +159,14 @@ set firewall ipv4 input  filter rule 10 action accept
 set firewall ipv4 input  filter rule 10 source group address-group FW_AG_ROUTER_ADDR_IPV4
 set firewall ipv4 input  filter rule 10 destination group address-group FW_AG_ROUTER_ADDR_IPV4
 
-begin_traffic  to local
-handle_traffic to local from mgmt infra home iot cctv containers wan
-end_traffic    to local
-
-begin_traffic  to mgmt
-handle_traffic to mgmt from local infra home iot cctv containers wan
-end_traffic    to mgmt
-
-begin_traffic  to infra
-handle_traffic to infra from local mgmt home iot cctv containers wan
-end_traffic    to infra
-
-begin_traffic  to home
-handle_traffic to home from local mgmt infra iot cctv containers wan
-end_traffic    to home
-
-begin_traffic  to iot
-handle_traffic to iot from local mgmt infra home cctv containers wan
-end_traffic    to iot
-
-begin_traffic  to cctv
-handle_traffic to cctv from local mgmt infra home iot containers wan
-end_traffic    to cctv
-
-begin_traffic  to containers
-handle_traffic to containers local mgmt infra home iot cctv wan 
-end_traffic    to containers
-
-begin_traffic  to wan
-handle_traffic to wan from local mgmt infra home iot cctv containers
-end_traffic    to wan
+handle_traffic to local       from mgmt infra home iot cctv containers wan
+handle_traffic to mgmt        from local infra home iot cctv containers wan
+handle_traffic to infra       from local mgmt home iot cctv containers wan
+handle_traffic to home        from local mgmt infra iot cctv containers wan
+handle_traffic to iot         from local mgmt infra home cctv containers wan
+handle_traffic to cctv        from local mgmt infra home iot containers wan
+handle_traffic to containers  from local mgmt infra home iot cctv wan
+handle_traffic to wan         from local mgmt infra home iot cctv containers
 
 ############################################################################################################ 
 # VYOS / LOCAL

@@ -4,7 +4,7 @@
 ; SOA Records
 $TTL 3600
 $ORIGIN monosense.io.
-@ 3600 IN SOA vg.monosense.io. vg.monosense.io. (
+@ 3600 IN SOA ns1.monosense.io. ns1.monosense.io. (
   1697718828         ; serial number (epoch timestamp)
   7200               ; refresh period
   3600               ; retry period
@@ -13,7 +13,7 @@ $ORIGIN monosense.io.
 )
 
 ; NS Records
-@                           IN  NS  vg.monosense.io.
+@                           IN  NS  ns1.monosense.io.
 
 ; MANAGEMENT bond0
 core                        IN  A   172.16.10.1
@@ -48,6 +48,7 @@ k8s-w3                      IN  A   172.16.11.16
 
 ; HOME bond0.1612
 ; start from .100-199
+smarthub                    IN  A   172.16.12.248
 printer                     IN  A   172.16.12.100
 
 ; IOT bond0.1613
@@ -79,13 +80,12 @@ icp04                       IN  A   172.16.14.104
 ipc05                       IN  A   172.16.14.105
 
 ; CONTAINERS
-adguard                     IN  A   10.11.11.2
-ns1                         IN  A   10.11.11.3
-cluster-0                   IN  A   10.11.11.4
-ns                          IN  A   10.11.11.5
-omada                       IN  A   10.11.11.6
-oneconnect                  IN  A   10.11.11.7
-onepass                     IN  A   10.11.11.8
+adguard                     IN  A   172.16.16.2
+ns1                         IN  A   172.16.16.3
+cluster-0                   IN  A   172.16.16.4
+ns                          IN  A   172.16.16.5
+omada                       IN  A   172.16.16.6
+coredns                     IN  A   172.16.16.7
 
 ; SERVICES / CILIUM K8S LB NON VLAN
 nginx-ingress               IN  A   10.11.10.1

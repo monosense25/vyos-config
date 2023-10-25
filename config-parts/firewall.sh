@@ -16,7 +16,7 @@ set firewall group network-group FW_NG_INFRA network '172.16.11.0/24'
 set firewall group network-group FW_NG_HOME network '172.16.12.0/24'
 set firewall group network-group FW_NG_IOT network '172.16.13.0/24'
 set firewall group network-group FW_NG_CCTV network '172.16.14.0/24'
-set firewall group network-group FW_NG_CONTAINERS network '10.11.11.0/24'
+set firewall group network-group FW_NG_CONTAINERS network '172.16.16.0/24'
 set firewall group network-group FW_NG_SERVICES network '10.11.10.0/24'
 
 # Router (VyOS itself)
@@ -38,7 +38,7 @@ set firewall group address-group FW_AG_NAS_ADDR address '172.16.11.1'
 set firewall group address-group FW_AG_NAS_ADDR address '172.16.11.3'
 
 # k8s cluster services
-set firewall group address-group FW_AG_K8S_API_SVC address '10.11.11.4'
+set firewall group address-group FW_AG_K8S_API_SVC address '172.16.16.4'
 set firewall group address-group FW_AG_K8S_HASS_SVC address '172.16.13.1'
 set firewall group address-group FW_AG_K8S_INGRESS_SVC address '10.11.10.1'
 set firewall group address-group FW_AG_K8S_VECTOR_SVC address '10.11.10.2'
@@ -56,9 +56,9 @@ set firewall group address-group FW_AG_PLEX_CLIENTS_IOT address '172.16.13.101'
 set firewall group address-group FW_AG_PLEX_CLIENTS_HOME address '172.16.12.100'
 
 # Vyos containers addresses
-set firewall group address-group FW_AG_VYOS_OMADA address '10.11.11.6'
-set firewall group address-group FW_AG_VYOS_DNSDIST address '10.11.11.5'
-set firewall group address-group FW_AG_VYOS_COREDNS address '10.11.11.9'
+set firewall group address-group FW_AG_VYOS_OMADA address '172.16.16.6'
+set firewall group address-group FW_AG_VYOS_DNSDIST address '172.16.16.5'
+set firewall group address-group FW_AG_VYOS_COREDNS address '172.16.16.7'
 
 # Port groups
 set firewall group port-group FW_PG_WIREGUARD port '51820'

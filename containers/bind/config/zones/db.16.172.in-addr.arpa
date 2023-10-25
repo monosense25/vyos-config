@@ -4,7 +4,7 @@
 ; SOA Records
 $TTL 3600
 $ORIGIN 16.172.in-addr.arpa.
-@ 3600 IN SOA vg.monosense.io. vg.monosense.io. (
+@ 3600 IN SOA ns1.monosense.io. ns1.monosense.io. (
   1697788975         ; serial number (epoch timestamp)
   7200               ; refresh period
   3600               ; retry period
@@ -13,7 +13,7 @@ $ORIGIN 16.172.in-addr.arpa.
 )
 
 ; NS Records
-@                            IN  NS vg.monosense.io.
+@                            IN  NS ns1.monosense.io.
 
 ; Reset origin
 $ORIGIN in-addr.arpa.
@@ -50,25 +50,26 @@ $ORIGIN in-addr.arpa.
 
 ; HOME
 ; start from .100-199
+248.12.16.172                IN  PTR smarthub.monosense.io.
 100.12.16.172                IN  PTR printer.monosense.io.
 
 ; IoT
 ; start from .100-199
-100.13.16.172                IN  PTR em00.monosense.io.
-101.13.16.172                IN  PTR em01.monosense.io.
-102.13.16.172                IN  PTR em02.monosense.io.
-103.13.16.172                IN  PTR em03.monosense.io.
-104.13.16.172                IN  PTR em04.monosense.io.
-105.13.16.172                IN  PTR em05.monosense.io.
-106.13.16.172                IN  PTR office-ups1-plug.monosense.io.
-107.13.16.172                IN  PTR office-ups2-plug.monosense.io.
-108.13.16.172                IN  PTR office-ups3-plug.monosense.io.
-109.13.16.172                IN  PTR backyard-water-pump-plug.monosense.io.
-110.13.16.172                IN  PTR backyard-booster-pump-plug.monosense.io.
-111.13.16.172                IN  PTR masterbedroom-plug.monosense.io.
-112.13.16.172                IN  PTR farezzbedroom-plug.monosense.io.
-113.13.16.172                IN  PTR office-rack-fans-plug.monosense.io.
-114.13.16.172                IN  PTR guestroom-led-strip.monosense.io.
+100.13.16.172                IN   PTR em00.monosense.io.
+101.13.16.172                IN   PTR em01.monosense.io.
+102.13.16.172                IN   PTR em02.monosense.io.
+103.13.16.172                IN   PTR em03.monosense.io.
+104.13.16.172                IN   PTR em04.monosense.io.
+105.13.16.172                IN   PTR em05.monosense.io.
+106.13.16.172                IN   PTR office-ups1-plug.monosense.io.
+107.13.16.172                IN   PTR office-ups2-plug.monosense.io.
+108.13.16.172                IN   PTR office-ups3-plug.monosense.io.
+109.13.16.172                IN   PTR backyard-water-pump-plug.monosense.io.
+110.13.16.172                IN   PTR backyard-booster-pump-plug.monosense.io.
+111.13.16.172                IN   PTR masterbedroom-plug.monosense.io.
+112.13.16.172                IN   PTR farezzbedroom-plug.monosense.io.
+113.13.16.172                IN   PTR office-rack-fans-plug.monosense.io.
+114.13.16.172                IN   PTR guestroom-led-strip.monosense.io.
 
 ; CCTV
 ; start from .100-199
@@ -80,10 +81,9 @@ $ORIGIN in-addr.arpa.
 105.14.16.172                IN  PTR ipc05.monosense.io.
 
 ; CONTAINERS
-2.11.11.10                   IN  PTR adguard.monosense.io.
-3.11.11.10                   IN  PTR ns1.monosense.io.
-4.11.11.10                   IN  PTR cluster-0.monosense.io.
-5.11.11.10                   IN  PTR ns.monosense.io.
-6.11.11.10                   IN  PTR omada.monosense.io.
-7.11.11.10                   IN  PTR oneconnect.monosense.io.
-8.11.11.10                   IN  PTR onepass.monosense.io.
+2.16.16.172                   IN  PTR adguard.monosense.io.
+3.16.16.172                   IN  PTR ns1.monosense.io.
+4.16.16.172                   IN  PTR cluster-0.monosense.io.
+5.16.16.172                   IN  PTR ns.monosense.io.
+6.16.16.172                   IN  PTR omada.monosense.io.
+7.16.16.172                   IN  PTR coredns.monosense.io.
