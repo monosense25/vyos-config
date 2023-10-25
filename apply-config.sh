@@ -89,6 +89,18 @@ source /opt/vyatta/etc/functions/script-template
 # Reset the configuration
 load /opt/vyatta/etc/config.boot.default
 
+# Temporary workaround
+mkdir -p /tmp/bind/cache
+sudo chown -R 104 /tmp/bind/cache
+sudo chmod +x /config/scripts/custom-config-backup.sh
+
+backupdest=/media/usb-backup
+sudo umount "$backupdest"
+sudo mkdir -p "$backupdest"
+sudo mount.exfat-fuse -o rw,uid=vyos,gid=vyattacfg /dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_0501a7b57d3aebec39c1d5c2222ed068372d5e7cd6d2c74e4c775e5ee97edac01d4c000000000000000000008e80aa130084171083558107cc2c2c67-0:0-part1 "$backupdest"
+
+
+
 # Load all config files
 for f in /config/config-parts/*.sh; do
   if [ -f "${f}" ]; then
@@ -97,16 +109,6 @@ for f in /config/config-parts/*.sh; do
     source "${f}"
   fi
 done
-
-# Temporary workaround
-mkdir -p /tmp/bind/cache
-sudo chown -R 104 /tmp/bind/cache
-sudo chmod +x /config/scripts/custom-config-backup.sh
-
-backupdest=/media/usb-backup
-sudo mkdir -p "$backupdest"
-sudo mount.exfat-fuse -o rw,uid=vyos,gid=vyattacfg /dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_0501a7b57d3aebec39c1d5c2222ed068372d5e7cd6d2c74e4c775e5ee97edac01d4c000000000000000000008e80aa130084171083558107cc2c2c67-0:0-part1 "$backupdest"
-
 
 if "$dry_run"; then
   # Show what's different from the running config

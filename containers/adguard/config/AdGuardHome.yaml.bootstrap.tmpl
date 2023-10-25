@@ -22,7 +22,7 @@ dns:
   refuse_any: true
   upstream_dns:
     - tls://1.1.1.1
-    - '[/monosense.io/]10.11.11.3'
+    - '[/monosense.io/]172.16.16.3'
   upstream_dns_file: ""
   bootstrap_dns:
     - 203.142.82.222
@@ -60,7 +60,7 @@ dns:
   private_networks: []
   use_private_ptr_resolvers: true
   local_ptr_upstreams:
-    - 10.11.11.3
+    - 172.16.16.3
   use_dns64: false
   dns64_prefixes: []
   serve_http3: false
