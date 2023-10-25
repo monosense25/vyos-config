@@ -56,7 +56,7 @@ set firewall ipv4 name VYOS-HOME-v4 default-action 'drop'
 set firewall ipv4 name VYOS-HOME-v4 description 'From VYOS to HOME'
 set firewall ipv4 name VYOS-HOME-v4 enable-default-log
 set firewall ipv4 name VYOS-HOME-v4 rule 999 action 'drop'
-set firewall ipv4 name VYOS-HOME-v4home rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name VYOS-HOME-v4 rule 999 description 'Rule: Drop_Invalid'
 set firewall ipv4 name VYOS-HOME-v4 rule 999 state invalid 'enable'
 set firewall ipv4 name VYOS-HOME-v4 rule 999 log 'enable'
 
@@ -486,74 +486,6 @@ set firewall ipv4 name IOT-CONTAINERS-v4 rule 999 log 'enable'
 set firewall ipv4 name IOT-WAN-v4 default-action 'accept'
 set firewall ipv4 name IOT-WAN-v4 description 'From IOT to WAN'
 
-############################################################################################################ 
-# CONTAINERS
-############################################################################################################
-# From CONTAINERS to VYOS
-set firewall ipv4 name CONTAINERS-VYOS-v4 default-action 'drop'
-set firewall ipv4 name CONTAINERS-VYOS-v4 description 'From CONTAINERS to VYOS'
-set firewall ipv4 name CONTAINERS-VYOS-v4 enable-default-log
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 action 'accept'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 description 'Rule: Accept_DHCP'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 destination port '67,68'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 protocol 'udp'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 source port '67,68'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 action 'accept'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 description 'Rule: Accept_NTP'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 destination port 'ntp'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 protocol 'udp'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 log 'enable'
-
-# From CONTAINERS to MGMT
-set firewall ipv4 name CONTAINERS-MGMT-v4 default-action 'drop'
-set firewall ipv4 name CONTAINERS-MGMT-v4 description 'From CONTAINERS to MGMT'
-set firewall ipv4 name CONTAINERS-MGMT-v4 enable-default-log
-set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 log 'enable'
-
-# From CONTAINERS to INFRA
-set firewall ipv4 name CONTAINERS-INFRA-v4 default-action 'accept'
-set firewall ipv4 name CONTAINERS-INFRA-v4 description 'From CONTAINERS to INFRA'
-set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 log 'enable'
-
-# From CONTAINERS to HOME
-set firewall ipv4 name CONTAINERS-HOME-v4 default-action 'drop'
-set firewall ipv4 name CONTAINERS-HOME-v4 description 'From CONTAINERS to HOME'
-set firewall ipv4 name CONTAINERS-HOME-v4 enable-default-log
-set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 log 'enable'
-
-# From CONTAINERS to IOT
-set firewall ipv4 name CONTAINERS-IOT-v4 default-action 'drop'
-set firewall ipv4 name CONTAINERS-IOT-v4 description 'From CONTAINERS to IOT'
-set firewall ipv4 name CONTAINERS-IOT-v4 enable-default-log
-set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 log 'enable'
-
-# From CONTAINERS to CCTV
-set firewall ipv4 name CONTAINERS-CCTV-v4 default-action 'drop'
-set firewall ipv4 name CONTAINERS-CCTV-v4 description 'From CONTAINERS to CCTV'
-set firewall ipv4 name CONTAINERS-CCTV-v4 enable-default-log
-set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 action 'drop'
-set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 description 'Rule: Drop_Invalid'
-set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 state invalid 'enable'
-set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 log 'enable'
-
-# From CONTAINERS to WAN
-set firewall ipv4 name CONTAINERS-WAN-v4 default-action 'accept'
-set firewall ipv4 name CONTAINERS-WAN-v4 description 'From CONTAINERS to WAN'
 
 ############################################################################################################ 
 # CCTV
@@ -638,9 +570,78 @@ set firewall ipv4 name CCTV-CONTAINERS-v4 rule 999 log 'enable'
 set firewall ipv4 name CCTV-WAN-v4 default-action 'drop'
 set firewall ipv4 name CCTV-WAN-v4 description 'From CCTV to WAN'
 
+############################################################################################################ 
+# CONTAINERS
+############################################################################################################
+# From CONTAINERS to VYOS
+set firewall ipv4 name CONTAINERS-VYOS-v4 default-action 'drop'
+set firewall ipv4 name CONTAINERS-VYOS-v4 description 'From CONTAINERS to VYOS'
+set firewall ipv4 name CONTAINERS-VYOS-v4 enable-default-log
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 action 'accept'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 description 'Rule: Accept_DHCP'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 destination port '67,68'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 protocol 'udp'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 50 source port '67,68'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 action 'accept'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 description 'Rule: Accept_NTP'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 destination port 'ntp'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 60 protocol 'udp'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-VYOS-v4 rule 999 log 'enable'
+
+# From CONTAINERS to MGMT
+set firewall ipv4 name CONTAINERS-MGMT-v4 default-action 'drop'
+set firewall ipv4 name CONTAINERS-MGMT-v4 description 'From CONTAINERS to MGMT'
+set firewall ipv4 name CONTAINERS-MGMT-v4 enable-default-log
+set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-MGMT-v4 rule 999 log 'enable'
+
+# From CONTAINERS to INFRA
+set firewall ipv4 name CONTAINERS-INFRA-v4 default-action 'accept'
+set firewall ipv4 name CONTAINERS-INFRA-v4 description 'From CONTAINERS to INFRA'
+set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-INFRA-v4 rule 999 log 'enable'
+
+# From CONTAINERS to HOME
+set firewall ipv4 name CONTAINERS-HOME-v4 default-action 'drop'
+set firewall ipv4 name CONTAINERS-HOME-v4 description 'From CONTAINERS to HOME'
+set firewall ipv4 name CONTAINERS-HOME-v4 enable-default-log
+set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-HOME-v4 rule 999 log 'enable'
+
+# From CONTAINERS to IOT
+set firewall ipv4 name CONTAINERS-IOT-v4 default-action 'drop'
+set firewall ipv4 name CONTAINERS-IOT-v4 description 'From CONTAINERS to IOT'
+set firewall ipv4 name CONTAINERS-IOT-v4 enable-default-log
+set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-IOT-v4 rule 999 log 'enable'
+
+# From CONTAINERS to CCTV
+set firewall ipv4 name CONTAINERS-CCTV-v4 default-action 'drop'
+set firewall ipv4 name CONTAINERS-CCTV-v4 description 'From CONTAINERS to CCTV'
+set firewall ipv4 name CONTAINERS-CCTV-v4 enable-default-log
+set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 description 'Rule: Drop_Invalid'
+set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-CCTV-v4 rule 999 log 'enable'
+
+# From CONTAINERS to WAN
+set firewall ipv4 name CONTAINERS-WAN-v4 default-action 'accept'
+set firewall ipv4 name CONTAINERS-WAN-v4 description 'From CONTAINERS to WAN'
+
 
 ############################################################################################################ 
-# CCTV
+# WAN
 ############################################################################################################
 # From WAN to VYOS
 set firewall ipv4 name WAN-VYOS-v4 default-action 'drop'
