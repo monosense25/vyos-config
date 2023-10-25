@@ -7,17 +7,17 @@ set service dhcp-server host-decl-name
 set service dhcp-server global-parameters 'option omada-address code 138 = ip-address;'
 set service dhcp-server dynamic-dns-update
 set service dhcp-server global-parameters "key ddnsupdate { algorithm hmac-sha256; secret ${SECRET_BIND_DDNS_KEY}; };"
-set service dhcp-server global-parameters "zone monosense.io. { primary 10.11.11.3; key ddnsupdate; }"
+set service dhcp-server global-parameters "zone monosense.io. { primary 172.16.16.3; key ddnsupdate; }"
 set service dhcp-server global-parameters "ddns-domainname &quot;monosense.io.&quot;;"
 set service dhcp-server global-parameters "ddns-rev-domainname &quot;in-addr.arpa.&quot;;"
-set service dhcp-server global-parameters "zone in-addr.arpa. { primary 10.11.11.3; key ddnsupdate; }"
-set service dhcp-server global-parameters "zone 16.172.in-addr.arpa. { primary 10.11.11.3; key ddnsupdate; }"
+set service dhcp-server global-parameters "zone in-addr.arpa. { primary 172.16.16.3; key ddnsupdate; }"
+set service dhcp-server global-parameters "zone 16.172.in-addr.arpa. { primary 172.16.16.3; key ddnsupdate; }"
 set service dhcp-server global-parameters "update-optimization false;"
 
 # Management VLAN
 set service dhcp-server shared-network-name MANAGEMENT authoritative
 set service dhcp-server shared-network-name MANAGEMENT ping-check
-set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 subnet-parameters 'option omada-address 10.11.11.6;'
+set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 subnet-parameters 'option omada-address 172.16.16.6;'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 default-router '172.16.10.254'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 lease '86400'
 set service dhcp-server shared-network-name MANAGEMENT subnet 172.16.10.0/24 name-server '172.16.16.5'
