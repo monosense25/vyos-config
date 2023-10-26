@@ -2,6 +2,13 @@
 # shellcheck shell=bash
 dry_run=true
 
+bind_cache="/tmp/bind/cache"
+# Mount a formatted exfat USB
+if [ ! -d "$bind_cache" ]; then
+    mkdir -p "$bind_cache"
+    sudo chown -R 104 "$bind_cache"
+fi
+
 if [ "$(id -g -n)" != 'vyattacfg' ] ; then
   exec sg vyattacfg -c "/bin/vbash $(readlink -f "$0") $*"
 fi
