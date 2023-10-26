@@ -1,7 +1,7 @@
 #!/bin/vbash
 # shellcheck disable=all
 
-set interfaces ethernet eth0 hw-id '98:fa:9b:19:be:d9'
+set interfaces ethernet eth5 hw-id '98:fa:9b:19:be:d9'
 set interfaces ethernet eth1 hw-id 'a0:36:9f:59:64:48'
 set interfaces ethernet eth2 hw-id 'a0:36:9f:59:64:49'
 set interfaces ethernet eth3 hw-id 'a0:36:9f:59:64:4a'
