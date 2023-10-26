@@ -25,9 +25,8 @@ set firewall group ipv6-address-group FW_AG_ROUTER_ADDR_IPV6 address '::1'
 # Printer Scanner
 set firewall group address-group FW_AG_PRINTER_ADDR address '172.16.12.100'
 # k8s nodes
-set firewall group address-group FW_AG_K8S_MASTER_INFRA_ADDR address '172.16.11.10-172.16.11.12' # Infra VLAN
-set firewall group address-group FW_AG_K8S_WORKER_INFRA_ADDR address '172.16.11.13-172.16.11.16' # Infra vLAN
-set firewall group address-group FW_AG_K8S_WORKER_IOT_ADDR address '172.16.13.13-172.16.13.16' # IoT vLAN
+set firewall group address-group FW_AG_K8S_INFRA_NODES address '172.16.11.10-172.16.11.16'
+set firewall group address-group FW_AG_K8S_IOT_NODES address '172.16.13.13-172.16.13.16'
 # Storage devices
 set firewall group address-group FW_AG_NAS_ADDR address '172.16.11.1'
 set firewall group address-group FW_AG_NAS_ADDR address '172.16.11.3'
@@ -48,7 +47,9 @@ set firewall group address-group FW_AG_PLEX_CLIENTS_IOT address '172.16.13.101'
 set firewall group address-group FW_AG_PLEX_CLIENTS_HOME address '172.16.12.100'
 # Vyos containers addresses
 set firewall group address-group FW_AG_VYOS_OMADA address '172.16.16.6'
-set firewall group address-group FW_AG_VYOS_DNSDIST address '172.16.16.5'
+set firewall group address-group FW_AG_VYOS_DNS address '172.16.16.2'
+set firewall group address-group FW_AG_VYOS_DNS address '172.16.16.3'
+set firewall group address-group FW_AG_VYOS_DNS address '172.16.16.5'
 set firewall group address-group FW_AG_VYOS_COREDNS address '172.16.16.7'
 # Port groups
 set firewall group port-group FW_PG_WIREGUARD port '51820'

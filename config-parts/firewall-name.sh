@@ -1,6 +1,256 @@
 #!/bin/vbash
 # shellcheck disable=all
 
+#### MGMT
+set firewall ipv4 name MGMT-LOCAL default-action 'accept'
+set firewall ipv4 name MGMT-LOCAL description 'From MGMT to LOCAL(VYOS) Zone'
+set firewall ipv4 name MGMT-LOCAL enable-default-log
+set firewall ipv4 name MGMT-LOCAL rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-LOCAL rule 999 action 'drop'
+set firewall ipv4 name MGMT-LOCAL rule 999 state invalid 'enable'
+set firewall ipv4 name MGMT-LOCAL rule 999 log 'enable'
+
+set firewall ipv4 name MGMT-INFRA default-action 'accept'
+set firewall ipv4 name MGMT-INFRA description 'From MGMT to INFRA Zone'
+set firewall ipv4 name MGMT-INFRA enable-default-log
+set firewall ipv4 name MGMT-INFRA rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-INFRA rule 999 action 'drop'
+set firewall ipv4 name MGMT-INFRA rule 999 state invalid 'enable'Í
+set firewall ipv4 name MGMT-INFRA rule 999 log 'enable'
+
+set firewall ipv4 name MGMT-HOME default-action 'accept'
+set firewall ipv4 name MGMT-HOME description 'From MGMT to HOME Zone'
+set firewall ipv4 name MGMT-HOME enable-default-log
+set firewall ipv4 name MGMT-HOME rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-HOME rule 999 action 'drop'
+set firewall ipv4 name MGMT-HOME rule 999 state invalid 'enable'Í
+set firewall ipv4 name MGMT-HOME rule 999 log 'enable'
+
+set firewall ipv4 name MGMT-IOT default-action 'accept'
+set firewall ipv4 name MGMT-IOT description 'From MGMT to IOT Zone'
+set firewall ipv4 name MGMT-IOT enable-default-log
+set firewall ipv4 name MGMT-IOT rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-IOT rule 999 action 'drop'
+set firewall ipv4 name MGMT-IOT rule 999 state invalid 'enable'Í
+set firewall ipv4 name MGMT-IOT rule 999 log 'enable'
+
+set firewall ipv4 name MGMT-CCTV default-action 'accept'
+set firewall ipv4 name MGMT-CCTV description 'From MGMT to CCTV Zone'
+set firewall ipv4 name MGMT-CCTV enable-default-log
+set firewall ipv4 name MGMT-CCTV rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-CCTV rule 999 action 'drop'
+set firewall ipv4 name MGMT-CCTV rule 999 state invalid 'enable'Í
+set firewall ipv4 name MGMT-CCTV rule 999 log 'enable'
+
+set firewall ipv4 name MGMT-CONTAINERS default-action 'accept'
+set firewall ipv4 name MGMT-CONTAINERS description 'From MGMT to CONTAINERS Zone'
+set firewall ipv4 name MGMT-CONTAINERS enable-default-log
+set firewall ipv4 name MGMT-CONTAINERS rule 999 description 'Drop Invalid'
+set firewall ipv4 name MGMT-CONTAINERS rule 999 action 'drop'
+set firewall ipv4 name MGMT-CONTAINERS rule 999 state invalid 'enable'
+set firewall ipv4 name MGMT-CONTAINERS rule 999 log 'enable'
+
+#### INFRA
+set firewall ipv4 name INFRA-LOCAL description 'From INFRA to LOCAL(VYOS) Zone'
+set firewall ipv4 name INFRA-LOCAL default-action 'drop'
+set firewall ipv4 name INFRA-LOCAL enable-default-log
+set firewall ipv4 name INFRA-LOCAL rule 10 description 'Allow DHCP'
+set firewall ipv4 name INFRA-LOCAL rule 10 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 10 protocol 'udp'
+set firewall ipv4 name INFRA-LOCAL rule 10 source port '67,68'
+set firewall ipv4 name INFRA-LOCAL rule 10 destination port '67,68'
+set firewall ipv4 name INFRA-LOCAL rule 20 description 'Allow NTP'
+set firewall ipv4 name INFRA-LOCAL rule 20 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 20 protocol 'udp'
+set firewall ipv4 name INFRA-LOCAL rule 20 destination port '123'
+set firewall ipv4 name INFRA-LOCAL rule 40 description 'Allow BGP'
+set firewall ipv4 name INFRA-LOCAL rule 40 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 40 protocol 'tcp'
+set firewall ipv4 name INFRA-LOCAL rule 40 destination port '179'
+set firewall ipv4 name INFRA-LOCAL rule 50 description 'Allow TFTP'
+set firewall ipv4 name INFRA-LOCAL rule 50 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 50 protocol 'tcp'
+set firewall ipv4 name INFRA-LOCAL rule 50 destination port '179'
+set firewall ipv4 name INFRA-LOCAL rule 60 description 'Allow ICMP request'
+set firewall ipv4 name INFRA-LOCAL rule 60 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 60 protocol 'icmp'
+set firewall ipv4 name INFRA-LOCAL rule 70 description 'Allow NODE-EXPORTER from K8S Nodes'
+set firewall ipv4 name INFRA-LOCAL rule 70 action 'accept'
+set firewall ipv4 name INFRA-LOCAL rule 70 protocol 'tcp'
+set firewall ipv4 name INFRA-LOCAL rule 70 source group address-group 'FW_AG_K8S_INFRA_NODES'
+set firewall ipv4 name INFRA-LOCAL rule 70 destination port '9100'
+set firewall ipv4 name INFRA-LOCAL rule 999 description 'drop invalid'
+set firewall ipv4 name INFRA-LOCAL rule 999 action 'drop'
+set firewall ipv4 name INFRA-LOCAL rule 999 state invalid 'enable'
+set firewall ipv4 name INFRA-LOCAL rule 999 log 'enable'
+
+
+#### HOME
+set firewall ipv4 name HOME-LOCAL description 'From HOME to LOCAL(VYOS) Zone'
+set firewall ipv4 name HOME-LOCAL default-action 'drop'
+set firewall ipv4 name HOME-LOCAL enable-default-log
+set firewall ipv4 name HOME-LOCAL rule 10 description 'Allow DHCP'
+set firewall ipv4 name HOME-LOCAL rule 10 action 'accept'
+set firewall ipv4 name HOME-LOCAL rule 10 protocol 'udp'
+set firewall ipv4 name HOME-LOCAL rule 10 source port '67,68'
+set firewall ipv4 name HOME-LOCAL rule 10 destination port '67,68'
+set firewall ipv4 name HOME-LOCAL rule 20 description 'Allow NTP'
+set firewall ipv4 name HOME-LOCAL rule 20 action 'accept'
+set firewall ipv4 name HOME-LOCAL rule 20 protocol 'udp'
+set firewall ipv4 name HOME-LOCAL rule 20 destination port '123'
+set firewall ipv4 name HOME-LOCAL rule 30 description 'Allow SSH from MBP'
+set firewall ipv4 name HOME-LOCAL rule 30 action 'accept'
+set firewall ipv4 name HOME-LOCAL rule 30 protocol 'tcp'
+set firewall ipv4 name HOME-LOCAL rule 30 destination port '22'
+set firewall ipv4 name HOME-LOCAL rule 30 source group mac-group 'FW_MG_HOME'
+set firewall ipv4 name HOME-LOCAL rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-LOCAL rule 999 action 'drop'
+set firewall ipv4 name HOME-LOCAL rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-LOCAL rule 999 log 'enable'
+
+set firewall ipv4 name HOME-MGMT description 'From HOME to MGMT Zone'
+set firewall ipv4 name HOME-MGMT default-action 'drop'
+set firewall ipv4 name HOME-MGMT enable-default-log
+set firewall ipv4 name HOME-MGMT rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-MGMT rule 999 action 'drop'
+set firewall ipv4 name HOME-MGMT rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-MGMT rule 999 log 'enable'
+
+set firewall ipv4 name HOME-INFRA description 'From HOME to INFRA Zone'
+set firewall ipv4 name HOME-INFRA default-action 'drop'
+set firewall ipv4 name HOME-INFRA enable-default-log
+set firewall ipv4 name HOME-INFRA rule 10 description 'Allow HTTP/HTTPS'
+set firewall ipv4 name HOME-INFRA rule 10 action 'accept'
+set firewall ipv4 name HOME-INFRA rule 10 protocol 'tcp'
+set firewall ipv4 name HOME-INFRA rule 10 destination port 'http,https'
+set firewall ipv4 name HOME-INFRA rule 20 description 'Allow TALOS API from MBP'
+set firewall ipv4 name HOME-INFRA rule 20 action 'accept'
+set firewall ipv4 name HOME-INFRA rule 20 protocol 'tcp'
+set firewall ipv4 name HOME-INFRA rule 20 source group mac-group 'FW_MG_HOME'
+set firewall ipv4 name HOME-INFRA rule 20 destination port 50000
+set firewall ipv4 name HOME-INFRA rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-INFRA rule 999 action 'drop'
+set firewall ipv4 name HOME-INFRA rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-INFRA rule 999 log 'enable'
+
+set firewall ipv4 name HOME-IOT description 'From HOME to IOT Zone'
+set firewall ipv4 name HOME-IOT default-action 'drop'
+set firewall ipv4 name HOME-IOT enable-default-log
+set firewall ipv4 name HOME-IOT rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-IOT rule 999 action 'drop'
+set firewall ipv4 name HOME-IOT rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-IOT rule 999 log 'enable'
+
+set firewall ipv4 name HOME-CCTV description 'From HOME to CCTV Zone'
+set firewall ipv4 name HOME-CCTV default-action 'drop'
+set firewall ipv4 name HOME-CCTV enable-default-log
+set firewall ipv4 name HOME-CCTV rule 10 description 'Allow HTTP/HTTPS'
+set firewall ipv4 name HOME-CCTV rule 10 action 'accept'
+set firewall ipv4 name HOME-CCTV rule 10 protocol 'tcp'
+set firewall ipv4 name HOME-CCTV rule 10 destination port 'http,https'
+set firewall ipv4 name HOME-CCTV rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-CCTV rule 999 action 'drop'
+set firewall ipv4 name HOME-CCTV rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-CCTV rule 999 log 'enable'
+
+set firewall ipv4 name HOME-CONTAINERS description 'From HOME to CONTAINERS Zone'
+set firewall ipv4 name HOME-CONTAINERS default-action 'drop'
+set firewall ipv4 name HOME-CONTAINERS enable-default-log
+set firewall ipv4 name HOME-CONTAINERS rule 10 description 'Allow DNS'
+set firewall ipv4 name HOME-CONTAINERS rule 10 action 'accept'
+set firewall ipv4 name HOME-CONTAINERS rule 10 protocol 'tcp_udp'
+set firewall ipv4 name HOME-CONTAINERS rule 10 destination port 'domain,domain_s'
+set firewall ipv4 name HOME-CONTAINERS rule 10 destination group address-group 'FW_AG_FYOS_DNS'
+set firewall ipv4 name HOME-CONTAINERS rule 20 description 'Allow HTTP/HTTPS from MBP'
+set firewall ipv4 name HOME-CONTAINERS rule 20 action 'accept'
+set firewall ipv4 name HOME-CONTAINERS rule 20 protocol 'tcp'
+set firewall ipv4 name HOME-CONTAINERS rule 20 source group mac-group 'FW_MG_HOME'
+set firewall ipv4 name HOME-CONTAINERS rule 20 destination port 'http,https'
+set firewall ipv4 name HOME-CONTAINERS rule 999 description 'drop invalid'
+set firewall ipv4 name HOME-CONTAINERS rule 999 action 'drop'
+set firewall ipv4 name HOME-CONTAINERS rule 999 state invalid 'enable'
+set firewall ipv4 name HOME-CONTAINERS rule 999 log 'enable'
+
+set firewall ipv4 name CONTAINERS-MGMT default-action 'accept'
+set firewall ipv4 name CONTAINERS-MGMT description 'From CONTAINERS to MGMT Zone'
+set firewall ipv4 name CONTAINERS-MGMT enable-default-log
+set firewall ipv4 name CONTAINERS-MGMT rule 999 description 'Drop Invalid'
+set firewall ipv4 name CONTAINERS-MGMT rule 999 action 'drop'
+set firewall ipv4 name CONTAINERS-MGMT rule 999 state invalid 'enable'
+set firewall ipv4 name CONTAINERS-MGMT rule 999 log 'enable'
+
+set firewall ipv4 name WAN-LOCAL description 'From WAN to LOCAL(VYOS) Zone'
+set firewall ipv4 name WAN-LOCAL default-action 'drop'
+set firewall ipv4 name WAN-LOCAL enable-default-log
+set firewall ipv4 name WAN-LOCAL rule 10 description 'Drop Invalid'
+set firewall ipv4 name WAN-LOCAL rule 10 action 'drop'
+set firewall ipv4 name WAN-LOCAL rule 10 state invalid 'enable'
+set firewall ipv4 name WAN-LOCAL rule 10 log 'enable'
+set firewall ipv4 name WAN-LOCAL rule 20 description 'Allow access to Wireguard'
+set firewall ipv4 name WAN-LOCAL rule 20 action 'accept'
+set firewall ipv4 name WAN-LOCAL rule 20 protocol 'udp'
+set firewall ipv4 name WAN-LOCAL rule 20 destination port '51821'
+set firewall ipv4 name WAN-MGMT description 'From WAN to MGMT Zone'
+set firewall ipv4 name WAN-MGMT default-action 'drop'
+set firewall ipv4 name WAN-MGMT enable-default-log
+set firewall ipv4 name WAN-MGMT rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-MGMT rule 999 action 'drop'
+set firewall ipv4 name WAN-MGMT rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-MGMT rule 999 log 'enable'
+set firewall ipv4 name WAN-INFRA description 'From WAN to INFRA Zone'
+set firewall ipv4 name WAN-INFRA default-action 'drop'
+set firewall ipv4 name WAN-INFRA enable-default-log
+set firewall ipv4 name WAN-INFRA rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-INFRA rule 999 action 'drop'
+set firewall ipv4 name WAN-INFRA rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-INFRA rule 999 log 'enable'
+set firewall ipv4 name WAN-HOME description 'From WAN to HOME Zone'
+set firewall ipv4 name WAN-HOME default-action 'drop'
+set firewall ipv4 name WAN-HOME enable-default-log
+set firewall ipv4 name WAN-HOME rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-HOME rule 999 action 'drop'
+set firewall ipv4 name WAN-HOME rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-HOME rule 999 log 'enable'
+set firewall ipv4 name WAN-IOT description 'From WAN to IOT Zone'
+set firewall ipv4 name WAN-IOT default-action 'drop'
+set firewall ipv4 name WAN-IOT enable-default-log
+set firewall ipv4 name WAN-IOT rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-IOT rule 999 action 'drop'
+set firewall ipv4 name WAN-IOT rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-IOT rule 999 log 'enable'
+set firewall ipv4 name WAN-CCTV description 'From WAN to CCTV Zone'
+set firewall ipv4 name WAN-CCTV default-action 'drop'
+set firewall ipv4 name WAN-CCTV enable-default-log
+set firewall ipv4 name WAN-CCTV rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-CCTV rule 999 action 'drop'
+set firewall ipv4 name WAN-CCTV rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-CCTV rule 999 log 'enable'
+set firewall ipv4 name WAN-CONTAINERS description 'From WAN to CONTAINERS Zone'
+set firewall ipv4 name WAN-CONTAINERS default-action 'drop'
+set firewall ipv4 name WAN-CONTAINERS enable-default-log
+set firewall ipv4 name WAN-CONTAINERS rule 999 description 'Drop Invalid'
+set firewall ipv4 name WAN-CONTAINERS rule 999 action 'drop'
+set firewall ipv4 name WAN-CONTAINERS rule 999 state invalid 'enable'
+set firewall ipv4 name WAN-CONTAINERS rule 999 log 'enable'
+set firewall ipv4 name LOCAL-WAN description 'From LOCAL(VYOS) to WAN Zone'
+set firewall ipv4 name LOCAL-WAN default-action 'accept'
+set firewall ipv4 name MGMT-WAN description 'From MGMT to WAN Zone'
+set firewall ipv4 name MGMT-WAN default-action 'accept'
+set firewall ipv4 name INFRA-WAN description 'From INFRA to WAN Zone'
+set firewall ipv4 name INFRA-WAN default-action 'accept'
+set firewall ipv4 name HOME-WAN description 'From HOME to WAN Zone'
+set firewall ipv4 name HOME-WAN default-action 'accept'
+set firewall ipv4 name IOT-WAN description 'From IOT to WAN Zone'
+set firewall ipv4 name IOT-WAN default-action 'accept'
+set firewall ipv4 name CCTV-WAN description 'From CCTV to WAN Zone'
+set firewall ipv4 name CCTV-WAN default-action 'accept'
+set firewall ipv4 name CONTAINERS-WAN description 'From CONTAINERS to WAN Zone'
+set firewall ipv4 name CONTAINERS-WAN default-action 'accept'
+
+
+
+
+
 ############################################################################################################ 
 # FW NAME RULE IPV4
 ############################################################################################################
