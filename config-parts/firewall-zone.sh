@@ -2,7 +2,7 @@
 # shellcheck disable=all
 
 set firewall zone VYOS description 'VYOS router zone'
-set firewall zone VYOS VYOS-zone
+set firewall zone VYOS local-zone
 set firewall zone VYOS default-action 'drop'
 set firewall zone VYOS from MGMT firewall name 'MGMT-VYOS-v4'
 set firewall zone VYOS from HOME firewall name 'HOME-VYOS-v4'
