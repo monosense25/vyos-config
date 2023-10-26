@@ -74,8 +74,8 @@ set container name omada volume logs mode 'rw'
 set container name omada volume logs source '/config/containers/omada/logs'
 
 set container name cloudflare-ddns allow-host-networks
-set container name cloudflare-ddns environment CF_API_TOKEN value 'l4s9ya_g43PftjZEOHsPp8kP1_BX7jVNlAu1lqab'
-set container name cloudflare-ddns environment DOMAINS value 'ipv4.monosense.io,ipv4.tripranata.com'
+set container name cloudflare-ddns environment CF_API_TOKEN value ''
+set container name cloudflare-ddns environment DOMAINS value ''
 set container name cloudflare-ddns environment IP4_PROVIDER value 'local'
 set container name cloudflare-ddns environment IP6_PROVIDER value 'none'
 set container name cloudflare-ddns environment PGID value '1000'
