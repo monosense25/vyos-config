@@ -18,7 +18,7 @@ if [ -d "/home/vyos" ]; then
   format = "ssh"
 [user]
   email = "eko.purwanto@monosense.io"
-  name = "monosense25"
+  name = "Eko Purwanto"
   signingKey = "/config/secrets/id_rsa.pub"
 END
   chown vyos:users /home/vyos/.gitconfig

@@ -3,6 +3,7 @@
 
 set service ssh disable-password-authentication
 set service ssh port '22'
+delete service ntp
 set service ntp server ntp.bsn.go.id prefer
 set service ntp server time.google.com
 set service ntp server time.cloudflare.com
